@@ -851,32 +851,110 @@ async def approve_dialog(
     return None
 
 
-@router.post(
-    "/{organization_id}/run-review-agent", name="organizations:run_review_agent"
+@router.api_route(
+    "/{organization_id}/run-review-agent",
+    name="organizations:run_review_agent",
+    methods=["GET", "POST"],
+    response_model=None,
 )
 async def run_review_agent(
     request: Request,
     organization_id: UUID4,
     session: AsyncSession = Depends(get_db_session),
-) -> HXRedirectResponse:
-    """Trigger the organization review agent as a background task."""
+) -> HXRedirectResponse | None:
+    """Trigger the organization review agent as a background task.
+
+    GET renders a modal where the reviewer can opt into auto-approval.
+    POST enqueues the review agent with the chosen options.
+    """
     repository = OrganizationRepository.from_session(session)
     organization = await repository.get_by_id(organization_id, include_blocked=True)
     if not organization:
         raise HTTPException(status_code=404, detail="Organization not found")
 
-    enqueue_job(
-        "organization_review.run_agent",
-        organization_id=organization.id,
-        context="manual",
-    )
+    can_auto_approve = organization.status in OrganizationStatus.review_statuses()
 
-    return HXRedirectResponse(
-        request,
-        str(request.url_for("organizations:detail", organization_id=organization_id))
-        + "?section=overview",
-        303,
-    )
+    if request.method == "POST":
+        data = await request.form()
+        auto_approve = can_auto_approve and data.get("auto_approve") is not None
+
+        enqueue_job(
+            "organization_review.run_agent",
+            organization_id=organization.id,
+            context="manual",
+            auto_approve_eligible=auto_approve,
+        )
+
+        await add_toast(
+            request,
+            "Organization review agent started"
+            + (" (will auto-approve if the agent approves)" if auto_approve else ""),
+            "success",
+        )
+        return HXRedirectResponse(
+            request,
+            str(
+                request.url_for(
+                    "organizations:detail", organization_id=organization_id
+                )
+            )
+            + "?section=overview",
+            303,
+        )
+
+    with modal("Run Organization Review Agent", open=True):
+        with tag.form(
+            hx_post=str(
+                request.url_for(
+                    "organizations:run_review_agent",
+                    organization_id=organization_id,
+                )
+            ),
+            hx_target="#modal",
+            classes="flex flex-col gap-4",
+        ):
+            with tag.p(classes="text-sm text-base-content/70"):
+                text(
+                    "Run the AI review agent for this organization. "
+                    "The report will be saved and shown in the review section."
+                )
+
+            with tag.div(classes="form-control"):
+                with tag.label(classes="label cursor-pointer justify-start gap-3"):
+                    with tag.input(
+                        type="checkbox",
+                        name="auto_approve",
+                        classes="checkbox",
+                        disabled=not can_auto_approve,
+                    ):
+                        pass
+                    with tag.div(classes="flex flex-col"):
+                        with tag.span(classes="label-text font-semibold"):
+                            text("Auto-approve if the agent approves")
+                        with tag.span(
+                            classes="label-text-alt text-base-content/60"
+                        ):
+                            text(
+                                "When enabled and the agent verdict is APPROVE, "
+                                "the organization will be approved automatically."
+                            )
+
+            if not can_auto_approve:
+                with tag.div(classes="alert alert-warning text-sm"):
+                    text(
+                        "Auto-approval is only available while the organization "
+                        f"is in a review status (currently: "
+                        f"{organization.status.get_display_name()})."
+                    )
+
+            with tag.div(classes="modal-action pt-2 border-t border-base-200"):
+                with tag.form(method="dialog"):
+                    with button(ghost=True):
+                        text("Cancel")
+                with button(variant="primary", type="submit"):
+                    text("Run Agent")
+
+    return None
 
 
 @router.api_route(

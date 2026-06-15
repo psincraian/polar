@@ -755,6 +755,36 @@ class OrganizationService:
         await plain_service.create_organization_review_thread(session, organization)
         return False
 
+    async def handle_manual_review_verdict(
+        self,
+        session: AsyncSession,
+        organization: Organization,
+        verdict: ReviewVerdict,
+    ) -> bool:
+        """Handle AI agent verdict for a manual backoffice review with auto-approve enabled.
+
+        Returns True if the organization was auto-approved, False otherwise.
+        Only auto-approves when the organization is in a review status and the
+        verdict is APPROVE. Unlike the threshold flow, this does not depend on the
+        payment threshold: a reviewer explicitly opted into auto-approval.
+        """
+        is_eligible = (
+            organization.status in OrganizationStatus.review_statuses()
+            and verdict == ReviewVerdict.APPROVE
+        )
+
+        if is_eligible:
+            next_threshold = max(
+                _AUTO_APPROVE_MIN_THRESHOLD,
+                (organization.next_review_threshold or 0) * 2,
+            )
+            await self.confirm_organization_reviewed(
+                session, organization, next_threshold
+            )
+            return True
+
+        return False
+
     async def deny_organization(
         self, session: AsyncSession, organization: Organization
     ) -> Organization:

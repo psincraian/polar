@@ -468,13 +468,13 @@ class OrganizationDetailView:
                     ):
                         with tag.li():
                             with tag.a(
-                                hx_post=str(
+                                hx_get=str(
                                     request.url_for(
                                         "organizations:run_review_agent",
                                         organization_id=self.org.id,
                                     )
                                 ),
-                                hx_confirm="Run organization review agent?",
+                                hx_target="#modal",
                             ):
                                 text("Run Review Agent")
                         with tag.li():

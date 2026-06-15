@@ -623,6 +623,130 @@ class TestHandleOngoingReviewVerdict:
 
 
 @pytest.mark.asyncio
+class TestHandleManualReviewVerdict:
+    async def test_auto_approve_initial_review(
+        self,
+        mocker: MockerFixture,
+        session: AsyncSession,
+        organization: Organization,
+    ) -> None:
+        # Given: org is INITIAL_REVIEW with threshold=$500
+        organization.status = OrganizationStatus.INITIAL_REVIEW
+        organization.next_review_threshold = 50_000
+
+        enqueue_job_mock = mocker.patch("polar.organization.service.enqueue_job")
+
+        from polar.organization_review.schemas import ReviewVerdict
+
+        # When: verdict is APPROVE
+        result = await organization_service.handle_manual_review_verdict(
+            session, organization, ReviewVerdict.APPROVE
+        )
+
+        # Then: auto-approved even though it's an initial review, threshold doubled
+        assert result is True
+        assert organization.status == OrganizationStatus.ACTIVE
+        assert organization.next_review_threshold == 100_000
+        enqueue_job_mock.assert_called_once()
+
+    async def test_auto_approve_ongoing_review(
+        self,
+        mocker: MockerFixture,
+        session: AsyncSession,
+        organization: Organization,
+    ) -> None:
+        # Given: org is ONGOING_REVIEW with threshold=$500
+        organization.status = OrganizationStatus.ONGOING_REVIEW
+        organization.next_review_threshold = 50_000
+        organization.initially_reviewed_at = datetime(2025, 1, 1, 12, 0, tzinfo=UTC)
+
+        mocker.patch("polar.organization.service.enqueue_job")
+
+        from polar.organization_review.schemas import ReviewVerdict
+
+        # When: verdict is APPROVE
+        result = await organization_service.handle_manual_review_verdict(
+            session, organization, ReviewVerdict.APPROVE
+        )
+
+        # Then: auto-approved
+        assert result is True
+        assert organization.status == OrganizationStatus.ACTIVE
+
+    async def test_min_threshold_when_unset(
+        self,
+        mocker: MockerFixture,
+        session: AsyncSession,
+        organization: Organization,
+    ) -> None:
+        # Given: org is INITIAL_REVIEW with no threshold set
+        organization.status = OrganizationStatus.INITIAL_REVIEW
+        organization.next_review_threshold = 0
+
+        mocker.patch("polar.organization.service.enqueue_job")
+
+        from polar.organization_review.schemas import ReviewVerdict
+
+        # When: verdict is APPROVE
+        result = await organization_service.handle_manual_review_verdict(
+            session, organization, ReviewVerdict.APPROVE
+        )
+
+        # Then: auto-approved with the $250 minimum threshold
+        assert result is True
+        assert organization.next_review_threshold == 25_000
+
+    async def test_not_approved_on_deny(
+        self,
+        mocker: MockerFixture,
+        session: AsyncSession,
+        organization: Organization,
+    ) -> None:
+        # Given: org is INITIAL_REVIEW
+        organization.status = OrganizationStatus.INITIAL_REVIEW
+        organization.next_review_threshold = 50_000
+
+        enqueue_job_mock = mocker.patch("polar.organization.service.enqueue_job")
+
+        from polar.organization_review.schemas import ReviewVerdict
+
+        # When: verdict is DENY
+        result = await organization_service.handle_manual_review_verdict(
+            session, organization, ReviewVerdict.DENY
+        )
+
+        # Then: not approved, status unchanged
+        assert result is False
+        assert organization.status == OrganizationStatus.INITIAL_REVIEW
+        enqueue_job_mock.assert_not_called()
+
+    async def test_not_approved_wrong_status(
+        self,
+        mocker: MockerFixture,
+        session: AsyncSession,
+        organization: Organization,
+    ) -> None:
+        # Given: org is ACTIVE (not a review status)
+        organization.status = OrganizationStatus.ACTIVE
+        organization.next_review_threshold = 50_000
+        organization.initially_reviewed_at = datetime(2025, 1, 1, 12, 0, tzinfo=UTC)
+
+        enqueue_job_mock = mocker.patch("polar.organization.service.enqueue_job")
+
+        from polar.organization_review.schemas import ReviewVerdict
+
+        # When: verdict is APPROVE but status is ACTIVE
+        result = await organization_service.handle_manual_review_verdict(
+            session, organization, ReviewVerdict.APPROVE
+        )
+
+        # Then: not approved
+        assert result is False
+        assert organization.status == OrganizationStatus.ACTIVE
+        enqueue_job_mock.assert_not_called()
+
+
+@pytest.mark.asyncio
 class TestDenyOrganization:
     async def test_deny_organization(
         self,

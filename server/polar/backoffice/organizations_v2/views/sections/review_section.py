@@ -55,8 +55,8 @@ class ReviewSection(ChecklistMixin):
                         variant="primary",
                         size="sm",
                         outline=True,
-                        hx_post=run_agent_url,
-                        hx_confirm="Run organization review agent?",
+                        hx_get=run_agent_url,
+                        hx_target="#modal",
                     ):
                         text("Run Agent")
                 with tag.p(classes="text-sm text-base-content/60 mb-4"):
@@ -84,8 +84,8 @@ class ReviewSection(ChecklistMixin):
                         variant="secondary",
                         size="sm",
                         outline=True,
-                        hx_post=run_agent_url,
-                        hx_confirm="Re-run organization review agent?",
+                        hx_get=run_agent_url,
+                        hx_target="#modal",
                     ):
                         text("Re-run Agent")
 

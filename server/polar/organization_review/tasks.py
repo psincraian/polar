@@ -134,6 +134,29 @@ async def run_review_agent(
                     risk_score=report.overall_risk_score,
                 )
 
+        # For MANUAL context with auto-approve eligibility (opt-in from backoffice):
+        # auto-approve the organization if the agent verdict is APPROVE
+        if review_context == ReviewContext.MANUAL and auto_approve_eligible:
+            auto_approved = await organization_service.handle_manual_review_verdict(
+                session, organization, report.verdict
+            )
+            log.info(
+                "organization_review.manual.verdict_handled",
+                organization_id=str(organization_id),
+                slug=organization.slug,
+                verdict=report.verdict.value,
+                auto_approved=auto_approved,
+            )
+            if auto_approved:
+                await review_repository.record_agent_decision(
+                    organization_id=organization_id,
+                    agent_review_id=agent_review.id,
+                    decision="APPROVE",
+                    review_context="manual",
+                    verdict=report.verdict.value,
+                    risk_score=report.overall_risk_score,
+                )
+
         # For SUBMISSION context: also create OrganizationReview record and act
         if review_context == ReviewContext.SUBMISSION:
             mapped_verdict = _VERDICT_MAP[report.verdict]
