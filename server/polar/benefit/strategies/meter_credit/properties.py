@@ -1,10 +1,11 @@
 from ..base.properties import BenefitGrantProperties, BenefitProperties
 
 
-class BenefitMeterCreditProperties(BenefitProperties):
+class BenefitMeterCreditProperties(BenefitProperties, total=False):
     meter_id: str
     units: int
     rollover: bool
+    per_seat: bool
 
 
 class BenefitGrantMeterCreditProperties(BenefitGrantProperties, total=False):

@@ -8,7 +8,8 @@ from polar.exceptions import PolarError
 from polar.logging import Logger
 from polar.member.repository import MemberRepository
 from polar.member.service import member_service
-from polar.models import Member, Organization
+from polar.models import Benefit, Member, Organization
+from polar.models.benefit import BenefitType
 from polar.models.benefit_grant import BenefitGrantScope, BenefitGrantScopeArgs
 from polar.models.order import Order
 from polar.models.subscription import Subscription
@@ -17,6 +18,20 @@ from polar.postgres import AsyncSession
 from polar.subscription.repository import SubscriptionRepository
 
 log: Logger = structlog.get_logger()
+
+
+def benefit_grants_per_seat(benefit: Benefit) -> bool:
+    """
+    Whether this benefit is granted per seat (``True``) or once per
+    subscription (``False``).
+
+    Only the ``meter_credit`` benefit supports the ``per_seat`` property.
+    Defaults to ``True`` for backward compatibility with benefits whose
+    properties don't contain the ``per_seat`` key.
+    """
+    if benefit.type == BenefitType.meter_credit:
+        return bool(benefit.properties.get("per_seat", True))
+    return True
 
 
 class BenefitGrantScopeError(PolarError): ...

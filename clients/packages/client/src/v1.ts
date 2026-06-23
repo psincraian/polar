@@ -8918,6 +8918,8 @@ export interface components {
       units: number
       /** Rollover */
       rollover: boolean
+      /** Per Seat */
+      per_seat?: boolean
       /**
        * Meter Id
        * Format: uuid4
@@ -8933,6 +8935,8 @@ export interface components {
       units: number
       /** Rollover */
       rollover: boolean
+      /** Per Seat */
+      per_seat?: boolean
       /**
        * Meter Id
        * Format: uuid4
@@ -8997,6 +9001,8 @@ export interface components {
       units: number
       /** Rollover */
       rollover: boolean
+      /** Per Seat */
+      per_seat?: boolean
       /**
        * Meter Id
        * Format: uuid4

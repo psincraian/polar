@@ -2200,7 +2200,10 @@ class SubscriptionService:
                 # Don't enqueue revocation yet, still within grace period
                 return
 
-        # For seat-based products, handle benefits through seats
+        # For seat-based products, per-seat benefits are handled through seats
+        # (granted/revoked as seats are claimed/revoked). Whole-subscription
+        # benefits (e.g. meter_credit with per_seat=False) are handled once,
+        # scoped to the subscription itself (member_id=None).
         if product.has_seat_based_price:
             # When subscription is cancelled/revoked, revoke all seats
             # which will in turn revoke benefits for each seat holder
@@ -2208,8 +2211,19 @@ class SubscriptionService:
                 await seat_service.revoke_all_seats_for_subscription(
                     session, subscription
                 )
-            # When subscription is active, benefits are granted when seats are claimed
-            # So we don't need to do anything here
+            # Per-seat benefits are granted when seats are claimed, so we only
+            # handle whole-subscription benefits here (the eligibility filter in
+            # benefit.enqueue_benefits_grants ensures only those are processed
+            # for member_id=None on seat-based products).
+            enqueue_job(
+                "benefit.enqueue_benefits_grants",
+                task=task,
+                customer_id=subscription.customer_id,
+                product_id=product.id,
+                subscription_id=subscription.id,
+                member_id=None,
+                delay=delay,
+            )
             return
 
         enqueue_job(

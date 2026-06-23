@@ -1,6 +1,7 @@
 from typing import Annotated, Literal
 
 from annotated_types import Gt, Le
+from pydantic import Field
 from pydantic.types import UUID4
 
 from polar.kit.schemas import Schema
@@ -15,6 +16,12 @@ from ..base.schemas import (
 
 INT_MAX_VALUE = 2_147_483_647
 
+PER_SEAT_DESCRIPTION = (
+    "When `false`, grant the full number of units once per subscription, "
+    "regardless of the number of seats. When `true` (the default), grant the "
+    "units to each seat/member. Only relevant for seat-based products."
+)
+
 
 class BenefitMeterCreditProperties(Schema):
     """
@@ -24,6 +31,7 @@ class BenefitMeterCreditProperties(Schema):
     units: int
     rollover: bool
     meter_id: UUID4
+    per_seat: bool = Field(default=True, description=PER_SEAT_DESCRIPTION)
 
 
 class BenefitMeterCreditCreateProperties(Schema):
@@ -34,6 +42,7 @@ class BenefitMeterCreditCreateProperties(Schema):
     units: Annotated[int, Gt(0), Le(INT_MAX_VALUE)]
     rollover: bool
     meter_id: UUID4
+    per_seat: bool = Field(default=True, description=PER_SEAT_DESCRIPTION)
 
 
 class BenefitMeterCreditSubscriberProperties(Schema):
@@ -44,6 +53,7 @@ class BenefitMeterCreditSubscriberProperties(Schema):
     units: int
     rollover: bool
     meter_id: UUID4
+    per_seat: bool = Field(default=True, description=PER_SEAT_DESCRIPTION)
 
 
 class BenefitMeterCreditCreate(BenefitCreateBase):

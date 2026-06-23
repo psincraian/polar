@@ -6,13 +6,88 @@ from polar.benefit.grant.scope import (
     CustomerDoesntHaveOwnerMember,
     MemberIdRequired,
     MemberNotFound,
+    benefit_grants_per_seat,
     resolve_member,
 )
-from polar.models import Member
+from polar.models import Member, Organization
+from polar.models.benefit import BenefitType
 from polar.models.member import MemberRole
 from polar.postgres import AsyncSession
 from tests.fixtures.database import SaveFixture
-from tests.fixtures.random_objects import create_customer, create_organization
+from tests.fixtures.random_objects import (
+    create_benefit,
+    create_customer,
+    create_organization,
+)
+
+
+@pytest.mark.asyncio
+class TestBenefitGrantsPerSeat:
+    """Tests for benefit_grants_per_seat() helper in scope.py"""
+
+    async def test_meter_credit_defaults_to_per_seat(
+        self,
+        save_fixture: SaveFixture,
+        organization: Organization,
+    ) -> None:
+        """A meter_credit benefit without a per_seat key behaves as per_seat=True."""
+        benefit = await create_benefit(
+            save_fixture,
+            organization=organization,
+            type=BenefitType.meter_credit,
+            properties={"meter_id": str(uuid.uuid4()), "units": 100, "rollover": False},
+        )
+        assert benefit_grants_per_seat(benefit) is True
+
+    async def test_meter_credit_per_seat_true(
+        self,
+        save_fixture: SaveFixture,
+        organization: Organization,
+    ) -> None:
+        benefit = await create_benefit(
+            save_fixture,
+            organization=organization,
+            type=BenefitType.meter_credit,
+            properties={
+                "meter_id": str(uuid.uuid4()),
+                "units": 100,
+                "rollover": False,
+                "per_seat": True,
+            },
+        )
+        assert benefit_grants_per_seat(benefit) is True
+
+    async def test_meter_credit_per_seat_false(
+        self,
+        save_fixture: SaveFixture,
+        organization: Organization,
+    ) -> None:
+        benefit = await create_benefit(
+            save_fixture,
+            organization=organization,
+            type=BenefitType.meter_credit,
+            properties={
+                "meter_id": str(uuid.uuid4()),
+                "units": 100,
+                "rollover": False,
+                "per_seat": False,
+            },
+        )
+        assert benefit_grants_per_seat(benefit) is False
+
+    async def test_non_meter_credit_always_per_seat(
+        self,
+        save_fixture: SaveFixture,
+        organization: Organization,
+    ) -> None:
+        """Other benefit types ignore per_seat and always grant per seat."""
+        benefit = await create_benefit(
+            save_fixture,
+            organization=organization,
+            type=BenefitType.custom,
+            properties={"note": None, "per_seat": False},
+        )
+        assert benefit_grants_per_seat(benefit) is True
 
 
 @pytest.mark.asyncio

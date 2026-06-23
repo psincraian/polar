@@ -35,7 +35,7 @@ from ..strategies import (
     BenefitProperties,
 )
 from .repository import BenefitGrantRepository
-from .scope import scope_to_args
+from .scope import benefit_grants_per_seat, scope_to_args
 from .sorting import BenefitGrantSortProperty
 
 log: Logger = structlog.get_logger()
@@ -396,23 +396,48 @@ class BenefitGrantService(ResourceServiceReader[BenefitGrant]):
             if g.error and g.error.get("type") == BenefitActionRequiredError.__name__
         }
 
+        # Determine which benefits this call is responsible for, depending on
+        # whether we're processing a specific seat/member or the subscription as
+        # a whole. For seat-based products, per-seat benefits are handled with a
+        # member_id (one call per seat), while whole-subscription benefits are
+        # handled once with member_id=None.
+        if member_id is not None:
+            eligible_benefit_ids = {
+                b.id for b in product.benefits if benefit_grants_per_seat(b)
+            }
+        elif product.has_seat_based_price:
+            eligible_benefit_ids = {
+                b.id for b in product.benefits if not benefit_grants_per_seat(b)
+            }
+        else:
+            eligible_benefit_ids = {b.id for b in product.benefits}
+
         grant_benefit_ids = (
             [
                 b.id
                 for b in product.benefits
-                if b.id not in granted_benefit_ids and b.id not in errored_benefit_ids
+                if b.id in eligible_benefit_ids
+                and b.id not in granted_benefit_ids
+                and b.id not in errored_benefit_ids
             ]
             if task == "grant"
             else []
         )
 
         revoke_benefit_ids = (
-            [b.id for b in product.benefits if b.id in granted_benefit_ids]
+            [
+                b.id
+                for b in product.benefits
+                if b.id in eligible_benefit_ids and b.id in granted_benefit_ids
+            ]
             if task == "revoke"
             else []
         )
 
-        # Include outdated grants (from subscription upgrades/downgrades)
+        # Include outdated grants (from subscription upgrades/downgrades).
+        # These benefits no longer belong to the product, so they are not part
+        # of `eligible_benefit_ids` and must not be filtered by it. Revoke them
+        # alongside whichever flow is currently running.
         outdated_grants = await repository.list_outdated_grants(product, **scope)
         revoke_benefit_ids.extend(g.benefit_id for g in outdated_grants)
 

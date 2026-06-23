@@ -152,6 +152,34 @@ export const MeterCreditBenefitForm = ({
               </FormItem>
             )}
           />
+          <FormField
+            control={control}
+            name="properties.per_seat"
+            defaultValue={true}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Grant credits per seat</FormLabel>
+                <FormControl>
+                  <div className="flex flex-row items-center gap-x-2">
+                    <Checkbox
+                      defaultChecked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                    <p className="text-sm">
+                      Grant the full amount of credits to each seat
+                    </p>
+                  </div>
+                </FormControl>
+                <FormMessage />
+                <FormDescription>
+                  When enabled, each seat receives the full amount of credits.
+                  Disable to grant the total amount once per subscription,
+                  regardless of the number of seats. Only applies to seat-based
+                  products.
+                </FormDescription>
+              </FormItem>
+            )}
+          />
         </>
       )}
       <InlineModal

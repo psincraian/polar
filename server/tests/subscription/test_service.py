@@ -1737,13 +1737,20 @@ class TestEnqueueBenefitsGrants:
             ]
         )
 
-    async def test_seat_based_product_skips_benefits(
+    async def test_seat_based_product_enqueues_subscription_scoped_grant(
         self,
         mocker: MockerFixture,
         session: AsyncSession,
         save_fixture: SaveFixture,
         organization: Organization,
     ) -> None:
+        """
+        For an active seat-based product, a subscription-scoped (member_id=None)
+        grant job is enqueued so whole-subscription benefits (per_seat=False)
+        get granted once. Per-seat benefits are still handled per seat claim;
+        the eligibility filter in benefit.enqueue_benefits_grants ensures only
+        whole benefits are processed for member_id=None.
+        """
         enqueue_job_mock = mocker.patch("polar.subscription.service.enqueue_job")
 
         product = await create_product(
@@ -1764,7 +1771,60 @@ class TestEnqueueBenefitsGrants:
 
         await subscription_service.enqueue_benefits_grants(session, subscription)
 
-        enqueue_job_mock.assert_not_called()
+        enqueue_job_mock.assert_called_once_with(
+            "benefit.enqueue_benefits_grants",
+            task="grant",
+            customer_id=subscription.customer_id,
+            product_id=product.id,
+            subscription_id=subscription.id,
+            member_id=None,
+            delay=None,
+        )
+
+    async def test_seat_based_product_inactive_enqueues_subscription_scoped_revoke(
+        self,
+        mocker: MockerFixture,
+        session: AsyncSession,
+        save_fixture: SaveFixture,
+        organization: Organization,
+    ) -> None:
+        """
+        For a canceled seat-based subscription, after revoking all seats a
+        subscription-scoped (member_id=None) revoke job is enqueued so whole
+        benefits get revoked.
+        """
+        mocker.patch(
+            "polar.subscription.service.seat_service.revoke_all_seats_for_subscription"
+        )
+        enqueue_job_mock = mocker.patch("polar.subscription.service.enqueue_job")
+
+        product = await create_product(
+            save_fixture,
+            organization=organization,
+            recurring_interval=SubscriptionRecurringInterval.month,
+            prices=[("seat", 1000, "usd")],
+        )
+
+        customer = await create_customer(save_fixture, organization=organization)
+        subscription = await create_subscription(
+            save_fixture,
+            product=product,
+            customer=customer,
+            seats=5,
+            status=SubscriptionStatus.canceled,
+        )
+
+        await subscription_service.enqueue_benefits_grants(session, subscription)
+
+        enqueue_job_mock.assert_called_once_with(
+            "benefit.enqueue_benefits_grants",
+            task="revoke",
+            customer_id=subscription.customer_id,
+            product_id=product.id,
+            subscription_id=subscription.id,
+            member_id=None,
+            delay=None,
+        )
 
     async def test_non_seat_based_product_grants_benefits(
         self,

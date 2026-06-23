@@ -23,7 +23,7 @@ from polar.worker import (
     get_retries,
 )
 
-from .grant.scope import resolve_member, resolve_scope
+from .grant.scope import benefit_grants_per_seat, resolve_member, resolve_scope
 from .grant.service import benefit_grant as benefit_grant_service
 from .strategies import BenefitRetriableError
 
@@ -155,7 +155,12 @@ async def benefit_grant(
             product = subscription.product
         elif order := resolved_scope.get("order"):
             product = order.product
-        is_seat_based = product.has_seat_based_price if product else False
+        # Whole-subscription benefits (e.g. meter_credit with per_seat=False) are
+        # not granted per seat, so they don't require a member_id even on
+        # seat-based products: they resolve to the owner member (or None).
+        is_seat_based = (
+            product.has_seat_based_price if product else False
+        ) and benefit_grants_per_seat(benefit)
 
         member = await resolve_member(
             session,
@@ -226,7 +231,12 @@ async def benefit_revoke(
             product = subscription.product
         elif order := resolved_scope.get("order"):
             product = order.product
-        is_seat_based = product.has_seat_based_price if product else False
+        # Whole-subscription benefits (e.g. meter_credit with per_seat=False) are
+        # not granted per seat, so they don't require a member_id even on
+        # seat-based products: they resolve to the owner member (or None).
+        is_seat_based = (
+            product.has_seat_based_price if product else False
+        ) and benefit_grants_per_seat(benefit)
 
         member = await resolve_member(
             session,
