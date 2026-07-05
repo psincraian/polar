@@ -33,12 +33,13 @@ export function OverviewSection({ organization }: OverviewSectionProps) {
 
   const initialMetrics = React.useMemo<(keyof schemas['Metrics'])[]>(() => {
     const stored = organization.feature_settings?.overview_metrics
-    if (stored?.length === 5) {
-      return stored.filter((slug) =>
-        ALL_METRICS.some((m) => m.slug === slug),
-      ) as (keyof schemas['Metrics'])[]
-    }
-    return DEFAULT_OVERVIEW_METRICS
+    // Respect any non-empty saved selection (the user may keep fewer than the
+    // maximum). Only fall back to the defaults when nothing valid is stored,
+    // otherwise a customized-down overview would revert on every refresh.
+    const filtered = (stored ?? []).filter((slug) =>
+      ALL_METRICS.some((m) => m.slug === slug),
+    ) as (keyof schemas['Metrics'])[]
+    return filtered.length > 0 ? filtered : DEFAULT_OVERVIEW_METRICS
   }, [organization.feature_settings?.overview_metrics])
 
   const [activeMetrics, setActiveMetrics] =

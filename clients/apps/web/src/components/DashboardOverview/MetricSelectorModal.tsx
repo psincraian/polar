@@ -3,7 +3,7 @@
 import { useModal } from '@/components/Modal/useModal'
 import { useDraggable } from '@/hooks/draggable'
 import { useUpdateOrganization } from '@/hooks/queries/org'
-import { ALL_METRICS } from '@/utils/metrics'
+import { ALL_METRICS, MAX_OVERVIEW_METRICS } from '@/utils/metrics'
 import { DndContext, DragOverlay } from '@dnd-kit/core'
 import {
   SortableContext,
@@ -114,7 +114,7 @@ export const MetricSelectorModalContent = ({
 
   const handleAdd = useCallback(
     (slug: keyof schemas['Metrics']) => {
-      if (selected.length >= 5) return
+      if (selected.length >= MAX_OVERVIEW_METRICS) return
       setSelected((prev) => [...prev, toItem(slug)])
     },
     [selected.length],
@@ -124,7 +124,11 @@ export const MetricSelectorModalContent = ({
     (m) => !selected.some((s) => s.slug === m.slug),
   )
 
-  const canSave = selected.length === 5
+  // At least one metric, up to the maximum. Allowing fewer than the maximum is
+  // what lets a user permanently remove widgets from their overview.
+  const isFull = selected.length >= MAX_OVERVIEW_METRICS
+  const canSave =
+    selected.length >= 1 && selected.length <= MAX_OVERVIEW_METRICS
 
   const handleSave = async () => {
     if (!canSave) return
@@ -159,12 +163,12 @@ export const MetricSelectorModalContent = ({
             <span
               className={twMerge(
                 'text-xs',
-                selected.length === 5
+                canSave
                   ? 'text-green-600 dark:text-green-400'
                   : 'dark:text-polar-400 text-gray-500',
               )}
             >
-              {selected.length}/5
+              {selected.length}/{MAX_OVERVIEW_METRICS}
             </span>
           </div>
           <DndContext
@@ -220,11 +224,11 @@ export const MetricSelectorModalContent = ({
               <button
                 key={metric.slug as string}
                 type="button"
-                disabled={selected.length >= 5}
+                disabled={isFull}
                 onClick={() => handleAdd(metric.slug)}
                 className={twMerge(
                   'dark:hover:bg-polar-700 cursor-pointer rounded-lg px-3 py-2 text-left text-sm transition-colors hover:bg-gray-50',
-                  selected.length >= 5
+                  isFull
                     ? 'dark:text-polar-500 cursor-not-allowed text-gray-500'
                     : null,
                 )}

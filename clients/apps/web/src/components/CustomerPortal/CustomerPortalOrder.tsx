@@ -6,6 +6,7 @@ import { formatCurrency } from '@polar-sh/currency'
 import Button from '@polar-sh/ui/components/atoms/Button'
 import { Status } from '@polar-sh/ui/components/atoms/Status'
 import { ThemingPresetProps } from '@polar-sh/ui/hooks/theming'
+import { useRouter } from 'next/navigation'
 import { useMemo, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 import { DownloadInvoicePortal } from '../Orders/DownloadInvoice'
@@ -44,6 +45,7 @@ const CustomerPortalOrder = ({
   customerSessionToken: string
   themingPreset: ThemingPresetProps
 }) => {
+  const router = useRouter()
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false)
 
   const isPartiallyOrFullyRefunded = useMemo(() => {
@@ -227,7 +229,7 @@ const CustomerPortalOrder = ({
               <DownloadInvoicePortal
                 customerSessionToken={customerSessionToken}
                 order={order}
-                onInvoiceGenerated={() => {}}
+                onInvoiceGenerated={() => router.refresh()}
               />
             </div>
           )}

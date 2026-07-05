@@ -191,6 +191,8 @@ export const getPreviousDateRange = (
   return [previousStartDate, previousEndDate]
 }
 
+export const MAX_OVERVIEW_METRICS = 5
+
 export const DEFAULT_OVERVIEW_METRICS: (keyof schemas['Metrics'])[] = [
   'revenue',
   'monthly_recurring_revenue',
