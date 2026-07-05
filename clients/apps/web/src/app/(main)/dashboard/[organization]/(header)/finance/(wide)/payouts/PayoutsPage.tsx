@@ -6,6 +6,7 @@ import DownloadInvoice, {
   InvoiceModal,
 } from '@/components/Payouts/DownloadInvoice'
 import { PayoutProvider } from '@/components/Payouts/PayoutContext'
+import PayoutScheduleForm from '@/components/Payouts/PayoutScheduleForm'
 import { PayoutStatus } from '@/components/Payouts/PayoutStatus'
 import AccountBanner from '@/components/Transactions/AccountBanner'
 import { platformFeesDisplayNames } from '@/components/Transactions/TransactionsList'
@@ -276,6 +277,18 @@ export default function ClientPage({
         <AccountBanner organization={organization} />
         {account && (
           <AccountBalance account={account} organization={organization} />
+        )}
+        {account && (
+          <div className="dark:bg-polar-800 flex flex-col gap-y-6 rounded-3xl bg-gray-100 p-8">
+            <div className="flex flex-col gap-y-1">
+              <h2 className="text-lg font-medium">Payout Schedule</h2>
+              <p className="dark:text-polar-500 text-gray-500">
+                Automate your payouts to happen on a recurring schedule instead
+                of withdrawing manually.
+              </p>
+            </div>
+            <PayoutScheduleForm account={account} />
+          </div>
         )}
         <DataTable
           columns={columns}

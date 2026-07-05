@@ -3,1923 +3,1789 @@
  * Do not make direct changes to the file.
  */
 
-export type paths = Record<string, never>
-export type webhooks = Record<string, never>
+export type paths = Record<string, never>;
+export type webhooks = Record<string, never>;
 export interface components {
-  schemas: {
-    /** Address */
-    Address: {
-      /**
-       * Line1
-       * @default null
-       */
-      line1: string | null
-      /**
-       * Line2
-       * @default null
-       */
-      line2: string | null
-      /**
-       * Postal Code
-       * @default null
-       */
-      postal_code: string | null
-      /**
-       * City
-       * @default null
-       */
-      city: string | null
-      /**
-       * State
-       * @default null
-       */
-      state: string | null
-      /**
-       * CountryAlpha2
-       * @example US
-       * @example SE
-       * @example FR
-       * @enum {string}
-       */
-      country:
-        | 'AD'
-        | 'AE'
-        | 'AF'
-        | 'AG'
-        | 'AI'
-        | 'AL'
-        | 'AM'
-        | 'AO'
-        | 'AQ'
-        | 'AR'
-        | 'AS'
-        | 'AT'
-        | 'AU'
-        | 'AW'
-        | 'AX'
-        | 'AZ'
-        | 'BA'
-        | 'BB'
-        | 'BD'
-        | 'BE'
-        | 'BF'
-        | 'BG'
-        | 'BH'
-        | 'BI'
-        | 'BJ'
-        | 'BL'
-        | 'BM'
-        | 'BN'
-        | 'BO'
-        | 'BQ'
-        | 'BR'
-        | 'BS'
-        | 'BT'
-        | 'BV'
-        | 'BW'
-        | 'BY'
-        | 'BZ'
-        | 'CA'
-        | 'CC'
-        | 'CD'
-        | 'CF'
-        | 'CG'
-        | 'CH'
-        | 'CI'
-        | 'CK'
-        | 'CL'
-        | 'CM'
-        | 'CN'
-        | 'CO'
-        | 'CR'
-        | 'CU'
-        | 'CV'
-        | 'CW'
-        | 'CX'
-        | 'CY'
-        | 'CZ'
-        | 'DE'
-        | 'DJ'
-        | 'DK'
-        | 'DM'
-        | 'DO'
-        | 'DZ'
-        | 'EC'
-        | 'EE'
-        | 'EG'
-        | 'EH'
-        | 'ER'
-        | 'ES'
-        | 'ET'
-        | 'FI'
-        | 'FJ'
-        | 'FK'
-        | 'FM'
-        | 'FO'
-        | 'FR'
-        | 'GA'
-        | 'GB'
-        | 'GD'
-        | 'GE'
-        | 'GF'
-        | 'GG'
-        | 'GH'
-        | 'GI'
-        | 'GL'
-        | 'GM'
-        | 'GN'
-        | 'GP'
-        | 'GQ'
-        | 'GR'
-        | 'GS'
-        | 'GT'
-        | 'GU'
-        | 'GW'
-        | 'GY'
-        | 'HK'
-        | 'HM'
-        | 'HN'
-        | 'HR'
-        | 'HT'
-        | 'HU'
-        | 'ID'
-        | 'IE'
-        | 'IL'
-        | 'IM'
-        | 'IN'
-        | 'IO'
-        | 'IQ'
-        | 'IR'
-        | 'IS'
-        | 'IT'
-        | 'JE'
-        | 'JM'
-        | 'JO'
-        | 'JP'
-        | 'KE'
-        | 'KG'
-        | 'KH'
-        | 'KI'
-        | 'KM'
-        | 'KN'
-        | 'KP'
-        | 'KR'
-        | 'KW'
-        | 'KY'
-        | 'KZ'
-        | 'LA'
-        | 'LB'
-        | 'LC'
-        | 'LI'
-        | 'LK'
-        | 'LR'
-        | 'LS'
-        | 'LT'
-        | 'LU'
-        | 'LV'
-        | 'LY'
-        | 'MA'
-        | 'MC'
-        | 'MD'
-        | 'ME'
-        | 'MF'
-        | 'MG'
-        | 'MH'
-        | 'MK'
-        | 'ML'
-        | 'MM'
-        | 'MN'
-        | 'MO'
-        | 'MP'
-        | 'MQ'
-        | 'MR'
-        | 'MS'
-        | 'MT'
-        | 'MU'
-        | 'MV'
-        | 'MW'
-        | 'MX'
-        | 'MY'
-        | 'MZ'
-        | 'NA'
-        | 'NC'
-        | 'NE'
-        | 'NF'
-        | 'NG'
-        | 'NI'
-        | 'NL'
-        | 'NO'
-        | 'NP'
-        | 'NR'
-        | 'NU'
-        | 'NZ'
-        | 'OM'
-        | 'PA'
-        | 'PE'
-        | 'PF'
-        | 'PG'
-        | 'PH'
-        | 'PK'
-        | 'PL'
-        | 'PM'
-        | 'PN'
-        | 'PR'
-        | 'PS'
-        | 'PT'
-        | 'PW'
-        | 'PY'
-        | 'QA'
-        | 'RE'
-        | 'RO'
-        | 'RS'
-        | 'RU'
-        | 'RW'
-        | 'SA'
-        | 'SB'
-        | 'SC'
-        | 'SD'
-        | 'SE'
-        | 'SG'
-        | 'SH'
-        | 'SI'
-        | 'SJ'
-        | 'SK'
-        | 'SL'
-        | 'SM'
-        | 'SN'
-        | 'SO'
-        | 'SR'
-        | 'SS'
-        | 'ST'
-        | 'SV'
-        | 'SX'
-        | 'SY'
-        | 'SZ'
-        | 'TC'
-        | 'TD'
-        | 'TF'
-        | 'TG'
-        | 'TH'
-        | 'TJ'
-        | 'TK'
-        | 'TL'
-        | 'TM'
-        | 'TN'
-        | 'TO'
-        | 'TR'
-        | 'TT'
-        | 'TV'
-        | 'TW'
-        | 'TZ'
-        | 'UA'
-        | 'UG'
-        | 'UM'
-        | 'US'
-        | 'UY'
-        | 'UZ'
-        | 'VA'
-        | 'VC'
-        | 'VE'
-        | 'VG'
-        | 'VI'
-        | 'VN'
-        | 'VU'
-        | 'WF'
-        | 'WS'
-        | 'YE'
-        | 'YT'
-        | 'ZA'
-        | 'ZM'
-        | 'ZW'
-    }
-    Benefit:
-      | components['schemas']['BenefitCustom']
-      | components['schemas']['BenefitDiscord']
-      | components['schemas']['BenefitGitHubRepository']
-      | components['schemas']['BenefitDownloadables']
-      | components['schemas']['BenefitLicenseKeys']
-      | components['schemas']['BenefitMeterCredit']
-    /**
-     * BenefitCustom
-     * @description A benefit of type `custom`.
-     *
-     *     Use it to grant any kind of benefit that doesn't fit in the other types.
-     */
-    BenefitCustom: {
-      /**
-       * Id
-       * Format: uuid4
-       * @description The ID of the benefit.
-       */
-      id: string
-      /**
-       * Created At
-       * Format: date-time
-       * @description Creation timestamp of the object.
-       */
-      created_at: string
-      /**
-       * Modified At
-       * @description Last modification timestamp of the object.
-       */
-      modified_at: string | null
-      /**
-       * Type
-       * @constant
-       */
-      type: 'custom'
-      /**
-       * Description
-       * @description The description of the benefit.
-       */
-      description: string
-      /**
-       * Selectable
-       * @description Whether the benefit is selectable when creating a product.
-       */
-      selectable: boolean
-      /**
-       * Deletable
-       * @description Whether the benefit is deletable.
-       */
-      deletable: boolean
-      /**
-       * Organization Id
-       * Format: uuid4
-       * @description The ID of the organization owning the benefit.
-       */
-      organization_id: string
-      /** Metadata */
-      metadata: {
-        [key: string]: string | number | boolean
-      }
-      properties: components['schemas']['BenefitCustomProperties']
-    }
-    /**
-     * BenefitCustomProperties
-     * @description Properties for a benefit of type `custom`.
-     */
-    BenefitCustomProperties: {
-      /** Note */
-      note: (string | null) | null
-    }
-    /**
-     * BenefitDiscord
-     * @description A benefit of type `discord`.
-     *
-     *     Use it to automatically invite your backers to a Discord server.
-     */
-    BenefitDiscord: {
-      /**
-       * Id
-       * Format: uuid4
-       * @description The ID of the benefit.
-       */
-      id: string
-      /**
-       * Created At
-       * Format: date-time
-       * @description Creation timestamp of the object.
-       */
-      created_at: string
-      /**
-       * Modified At
-       * @description Last modification timestamp of the object.
-       */
-      modified_at: string | null
-      /**
-       * Type
-       * @constant
-       */
-      type: 'discord'
-      /**
-       * Description
-       * @description The description of the benefit.
-       */
-      description: string
-      /**
-       * Selectable
-       * @description Whether the benefit is selectable when creating a product.
-       */
-      selectable: boolean
-      /**
-       * Deletable
-       * @description Whether the benefit is deletable.
-       */
-      deletable: boolean
-      /**
-       * Organization Id
-       * Format: uuid4
-       * @description The ID of the organization owning the benefit.
-       */
-      organization_id: string
-      /** Metadata */
-      metadata: {
-        [key: string]: string | number | boolean
-      }
-      properties: components['schemas']['BenefitDiscordProperties']
-    }
-    /**
-     * BenefitDiscordProperties
-     * @description Properties for a benefit of type `discord`.
-     */
-    BenefitDiscordProperties: {
-      /**
-       * Guild Id
-       * @description The ID of the Discord server.
-       */
-      guild_id: string
-      /**
-       * Role Id
-       * @description The ID of the Discord role to grant.
-       */
-      role_id: string
-      /**
-       * Kick Member
-       * @description Whether to kick the member from the Discord server on revocation.
-       */
-      kick_member: boolean
-      /** Guild Token */
-      readonly guild_token: string
-    }
-    /** BenefitDownloadables */
-    BenefitDownloadables: {
-      /**
-       * Id
-       * Format: uuid4
-       * @description The ID of the benefit.
-       */
-      id: string
-      /**
-       * Created At
-       * Format: date-time
-       * @description Creation timestamp of the object.
-       */
-      created_at: string
-      /**
-       * Modified At
-       * @description Last modification timestamp of the object.
-       */
-      modified_at: string | null
-      /**
-       * Type
-       * @constant
-       */
-      type: 'downloadables'
-      /**
-       * Description
-       * @description The description of the benefit.
-       */
-      description: string
-      /**
-       * Selectable
-       * @description Whether the benefit is selectable when creating a product.
-       */
-      selectable: boolean
-      /**
-       * Deletable
-       * @description Whether the benefit is deletable.
-       */
-      deletable: boolean
-      /**
-       * Organization Id
-       * Format: uuid4
-       * @description The ID of the organization owning the benefit.
-       */
-      organization_id: string
-      /** Metadata */
-      metadata: {
-        [key: string]: string | number | boolean
-      }
-      properties: components['schemas']['BenefitDownloadablesProperties']
-    }
-    /** BenefitDownloadablesProperties */
-    BenefitDownloadablesProperties: {
-      /** Archived */
-      archived: {
-        [key: string]: boolean
-      }
-      /** Files */
-      files: string[]
-    }
-    /**
-     * BenefitGitHubRepository
-     * @description A benefit of type `github_repository`.
-     *
-     *     Use it to automatically invite your backers to a private GitHub repository.
-     */
-    BenefitGitHubRepository: {
-      /**
-       * Id
-       * Format: uuid4
-       * @description The ID of the benefit.
-       */
-      id: string
-      /**
-       * Created At
-       * Format: date-time
-       * @description Creation timestamp of the object.
-       */
-      created_at: string
-      /**
-       * Modified At
-       * @description Last modification timestamp of the object.
-       */
-      modified_at: string | null
-      /**
-       * Type
-       * @constant
-       */
-      type: 'github_repository'
-      /**
-       * Description
-       * @description The description of the benefit.
-       */
-      description: string
-      /**
-       * Selectable
-       * @description Whether the benefit is selectable when creating a product.
-       */
-      selectable: boolean
-      /**
-       * Deletable
-       * @description Whether the benefit is deletable.
-       */
-      deletable: boolean
-      /**
-       * Organization Id
-       * Format: uuid4
-       * @description The ID of the organization owning the benefit.
-       */
-      organization_id: string
-      /** Metadata */
-      metadata: {
-        [key: string]: string | number | boolean
-      }
-      properties: components['schemas']['BenefitGitHubRepositoryProperties']
-    }
-    /**
-     * BenefitGitHubRepositoryProperties
-     * @description Properties for a benefit of type `github_repository`.
-     */
-    BenefitGitHubRepositoryProperties: {
-      /**
-       * Repository Owner
-       * @description The owner of the repository.
-       * @example polarsource
-       */
-      repository_owner: string
-      /**
-       * Repository Name
-       * @description The name of the repository.
-       * @example private_repo
-       */
-      repository_name: string
-      /**
-       * Permission
-       * @description The permission level to grant. Read more about roles and their permissions on [GitHub documentation](https://docs.github.com/en/organizations/managing-user-access-to-your-organizations-repositories/managing-repository-roles/repository-roles-for-an-organization#permissions-for-each-role).
-       * @enum {string}
-       */
-      permission: 'pull' | 'triage' | 'push' | 'maintain' | 'admin'
-    }
-    /** BenefitLicenseKeyActivationProperties */
-    BenefitLicenseKeyActivationProperties: {
-      /** Limit */
-      limit: number
-      /** Enable Customer Admin */
-      enable_customer_admin: boolean
-    }
-    /** BenefitLicenseKeyExpirationProperties */
-    BenefitLicenseKeyExpirationProperties: {
-      /** Ttl */
-      ttl: number
-      /**
-       * Timeframe
-       * @enum {string}
-       */
-      timeframe: 'year' | 'month' | 'day'
-    }
-    /** BenefitLicenseKeys */
-    BenefitLicenseKeys: {
-      /**
-       * Id
-       * Format: uuid4
-       * @description The ID of the benefit.
-       */
-      id: string
-      /**
-       * Created At
-       * Format: date-time
-       * @description Creation timestamp of the object.
-       */
-      created_at: string
-      /**
-       * Modified At
-       * @description Last modification timestamp of the object.
-       */
-      modified_at: string | null
-      /**
-       * Type
-       * @constant
-       */
-      type: 'license_keys'
-      /**
-       * Description
-       * @description The description of the benefit.
-       */
-      description: string
-      /**
-       * Selectable
-       * @description Whether the benefit is selectable when creating a product.
-       */
-      selectable: boolean
-      /**
-       * Deletable
-       * @description Whether the benefit is deletable.
-       */
-      deletable: boolean
-      /**
-       * Organization Id
-       * Format: uuid4
-       * @description The ID of the organization owning the benefit.
-       */
-      organization_id: string
-      /** Metadata */
-      metadata: {
-        [key: string]: string | number | boolean
-      }
-      properties: components['schemas']['BenefitLicenseKeysProperties']
-    }
-    /** BenefitLicenseKeysProperties */
-    BenefitLicenseKeysProperties: {
-      /** Prefix */
-      prefix: string | null
-      expires:
-        | components['schemas']['BenefitLicenseKeyExpirationProperties']
-        | null
-      activations:
-        | components['schemas']['BenefitLicenseKeyActivationProperties']
-        | null
-      /** Limit Usage */
-      limit_usage: number | null
-    }
-    /**
-     * BenefitMeterCredit
-     * @description A benefit of type `meter_unit`.
-     *
-     *     Use it to grant a number of units on a specific meter.
-     */
-    BenefitMeterCredit: {
-      /**
-       * Id
-       * Format: uuid4
-       * @description The ID of the benefit.
-       */
-      id: string
-      /**
-       * Created At
-       * Format: date-time
-       * @description Creation timestamp of the object.
-       */
-      created_at: string
-      /**
-       * Modified At
-       * @description Last modification timestamp of the object.
-       */
-      modified_at: string | null
-      /**
-       * Type
-       * @constant
-       */
-      type: 'meter_credit'
-      /**
-       * Description
-       * @description The description of the benefit.
-       */
-      description: string
-      /**
-       * Selectable
-       * @description Whether the benefit is selectable when creating a product.
-       */
-      selectable: boolean
-      /**
-       * Deletable
-       * @description Whether the benefit is deletable.
-       */
-      deletable: boolean
-      /**
-       * Organization Id
-       * Format: uuid4
-       * @description The ID of the organization owning the benefit.
-       */
-      organization_id: string
-      /** Metadata */
-      metadata: {
-        [key: string]: string | number | boolean
-      }
-      properties: components['schemas']['BenefitMeterCreditProperties']
-    }
-    /**
-     * BenefitMeterCreditProperties
-     * @description Properties for a benefit of type `meter_unit`.
-     */
-    BenefitMeterCreditProperties: {
-      /** Units */
-      units: number
-      /** Rollover */
-      rollover: boolean
-      /**
-       * Meter Id
-       * Format: uuid4
-       */
-      meter_id: string
-    }
-    /**
-     * CustomerCancellationReason
-     * @enum {string}
-     */
-    CustomerCancellationReason:
-      | 'customer_service'
-      | 'low_quality'
-      | 'missing_features'
-      | 'switched_service'
-      | 'too_complex'
-      | 'too_expensive'
-      | 'unused'
-      | 'other'
-    /** CustomerSessionCodeEmail */
-    CustomerSessionCodeEmail: {
-      /**
-       * Template
-       * @default customer_session_code
-       * @constant
-       */
-      template: 'customer_session_code'
-      props: components['schemas']['CustomerSessionCodeProps']
-    }
-    /** CustomerSessionCodeProps */
-    CustomerSessionCodeProps: {
-      /** Email */
-      email: string
-      organization: components['schemas']['Organization']
-      /** Code */
-      code: string
-      /** Code Lifetime Minutes */
-      code_lifetime_minutes: number
-      /** Url */
-      url: string
-    }
-    /** EmailUpdateEmail */
-    EmailUpdateEmail: {
-      /**
-       * Template
-       * @default email_update
-       * @constant
-       */
-      template: 'email_update'
-      props: components['schemas']['EmailUpdateProps']
-    }
-    /** EmailUpdateProps */
-    EmailUpdateProps: {
-      /** Email */
-      email: string
-      /** Token Lifetime Minutes */
-      token_lifetime_minutes: number
-      /** Url */
-      url: string
-    }
-    /** LoginCodeEmail */
-    LoginCodeEmail: {
-      /**
-       * Template
-       * @default login_code
-       * @constant
-       */
-      template: 'login_code'
-      props: components['schemas']['LoginCodeProps']
-    }
-    /** LoginCodeProps */
-    LoginCodeProps: {
-      /** Email */
-      email: string
-      /** Code */
-      code: string
-      /** Code Lifetime Minutes */
-      code_lifetime_minutes: number
-    }
-    /** MaintainerCreateAccountNotificationPayload */
-    MaintainerCreateAccountNotificationPayload: {
-      /** Organization Name */
-      organization_name: string
-      /** Url */
-      url: string
-    }
-    /** MaintainerNewPaidSubscriptionNotificationPayload */
-    MaintainerNewPaidSubscriptionNotificationPayload: {
-      /** Subscriber Name */
-      subscriber_name: string
-      /** Tier Name */
-      tier_name: string
-      /** Tier Price Amount */
-      tier_price_amount: number | null
-      /** Tier Price Recurring Interval */
-      tier_price_recurring_interval: string
-      /** Tier Organization Name */
-      tier_organization_name: string
-      /**
-       * Currency
-       * @default usd
-       */
-      currency: string
-      /** Formatted Price Amount */
-      readonly formatted_price_amount: string
-    }
-    /** MaintainerNewProductSaleNotificationPayload */
-    MaintainerNewProductSaleNotificationPayload: {
-      /** Product Name */
-      product_name: string
-      /** Product Price Amount */
-      product_price_amount: number
-      /**
-       * Customer Name
-       * @default A customer
-       */
-      customer_name: string
-      /**
-       * Organization Name
-       * @default
-       */
-      organization_name: string
-      /**
-       * Customer Email
-       * @default null
-       */
-      customer_email: string | null
-      /**
-       * Billing Address Country
-       * @default null
-       */
-      billing_address_country: string | null
-      /**
-       * Billing Address City
-       * @default null
-       */
-      billing_address_city: string | null
-      /**
-       * Billing Address Line1
-       * @default null
-       */
-      billing_address_line1: string | null
-      /**
-       * Product Image Url
-       * @default null
-       */
-      product_image_url: string | null
-      /**
-       * Order Id
-       * @default null
-       */
-      order_id: string | null
-      /**
-       * Order Date
-       * @default null
-       */
-      order_date: string | null
-      /**
-       * Organization Slug
-       * @default null
-       */
-      organization_slug: string | null
-      /**
-       * Billing Reason
-       * @default null
-       */
-      billing_reason: components['schemas']['OrderBillingReasonInternal'] | null
-      /**
-       * Currency
-       * @default usd
-       */
-      currency: string
-      /** Formatted Price Amount */
-      readonly formatted_price_amount: string
-      /**
-       * Formatted Billing Reason
-       * @default null
-       */
-      readonly formatted_billing_reason: string | null
-      /** Formatted Address Country */
-      readonly formatted_address_country: string | null
-      /**
-       * Order Url
-       * @default null
-       */
-      readonly order_url: string | null
-    }
-    /** NotificationCreateAccountEmail */
-    NotificationCreateAccountEmail: {
-      /**
-       * Template
-       * @default notification_create_account
-       * @constant
-       */
-      template: 'notification_create_account'
-      props: components['schemas']['MaintainerCreateAccountNotificationPayload']
-    }
-    /** NotificationNewSaleEmail */
-    NotificationNewSaleEmail: {
-      /**
-       * Template
-       * @default notification_new_sale
-       * @constant
-       */
-      template: 'notification_new_sale'
-      props: components['schemas']['MaintainerNewProductSaleNotificationPayload']
-    }
-    /** NotificationNewSubscriptionEmail */
-    NotificationNewSubscriptionEmail: {
-      /**
-       * Template
-       * @default notification_new_subscription
-       * @constant
-       */
-      template: 'notification_new_subscription'
-      props: components['schemas']['MaintainerNewPaidSubscriptionNotificationPayload']
-    }
-    /** OAuth2LeakedClientEmail */
-    OAuth2LeakedClientEmail: {
-      /**
-       * Template
-       * @default oauth2_leaked_client
-       * @constant
-       */
-      template: 'oauth2_leaked_client'
-      props: components['schemas']['OAuth2LeakedClientProps']
-    }
-    /** OAuth2LeakedClientProps */
-    OAuth2LeakedClientProps: {
-      /** Email */
-      email: string
-      /** Token Type */
-      token_type: string
-      /** Client Name */
-      client_name: string
-      /** Notifier */
-      notifier: string
-      /** Url */
-      url: string
-    }
-    /** OAuth2LeakedTokenEmail */
-    OAuth2LeakedTokenEmail: {
-      /**
-       * Template
-       * @default oauth2_leaked_token
-       * @constant
-       */
-      template: 'oauth2_leaked_token'
-      props: components['schemas']['OAuth2LeakedTokenProps']
-    }
-    /** OAuth2LeakedTokenProps */
-    OAuth2LeakedTokenProps: {
-      /** Email */
-      email: string
-      /** Client Name */
-      client_name: string
-      /** Notifier */
-      notifier: string
-      /** Url */
-      url: string
-    }
-    /**
-     * OrderBillingReason
-     * @enum {string}
-     */
-    OrderBillingReason:
-      | 'purchase'
-      | 'subscription_create'
-      | 'subscription_cycle'
-      | 'subscription_update'
-    /**
-     * OrderBillingReasonInternal
-     * @description Internal billing reasons with additional granularity.
-     * @enum {string}
-     */
-    OrderBillingReasonInternal:
-      | 'purchase'
-      | 'subscription_create'
-      | 'subscription_cycle'
-      | 'subscription_cycle_after_trial'
-      | 'subscription_update'
-    /** OrderConfirmationEmail */
-    OrderConfirmationEmail: {
-      /**
-       * Template
-       * @default order_confirmation
-       * @constant
-       */
-      template: 'order_confirmation'
-      props: components['schemas']['OrderConfirmationProps']
-    }
-    /** OrderConfirmationProps */
-    OrderConfirmationProps: {
-      /** Email */
-      email: string
-      organization: components['schemas']['Organization']
-      product: components['schemas']['ProductEmail'] | null
-      order: components['schemas']['OrderEmail']
-      /** Url */
-      url: string
-    }
-    /** OrderEmail */
-    OrderEmail: {
-      /**
-       * Id
-       * Format: uuid4
-       * @description The ID of the object.
-       */
-      id: string
-      /**
-       * Created At
-       * Format: date-time
-       * @description Creation timestamp of the object.
-       */
-      created_at: string
-      /**
-       * Modified At
-       * @description Last modification timestamp of the object.
-       */
-      modified_at: string | null
-      /** @example paid */
-      status: components['schemas']['OrderStatus']
-      /**
-       * Paid
-       * @description Whether the order has been paid for.
-       * @example true
-       */
-      paid: boolean
-      /**
-       * Subtotal Amount
-       * @description Amount in cents, before discounts and taxes.
-       * @example 10000
-       */
-      subtotal_amount: number
-      /**
-       * Discount Amount
-       * @description Discount amount in cents.
-       * @example 1000
-       */
-      discount_amount: number
-      /**
-       * Net Amount
-       * @description Amount in cents, after discounts but before taxes.
-       * @example 9000
-       */
-      net_amount: number
-      /**
-       * Tax Amount
-       * @description Sales tax amount in cents.
-       * @example 720
-       */
-      tax_amount: number
-      /**
-       * Total Amount
-       * @description Amount in cents, after discounts and taxes.
-       * @example 9720
-       */
-      total_amount: number
-      /**
-       * Applied Balance Amount
-       * @description Customer's balance amount applied to this invoice. Can increase the total amount paid, if the customer has a negative balance,  or decrease it, if the customer has a positive balance.Amount in cents.
-       * @example 0
-       */
-      applied_balance_amount: number
-      /**
-       * Due Amount
-       * @description Amount in cents that is due for this order.
-       * @example 0
-       */
-      due_amount: number
-      /**
-       * Refunded Amount
-       * @description Amount refunded in cents.
-       * @example 0
-       */
-      refunded_amount: number
-      /**
-       * Refunded Tax Amount
-       * @description Sales tax refunded in cents.
-       * @example 0
-       */
-      refunded_tax_amount: number
-      /**
-       * Currency
-       * @example usd
-       */
-      currency: string
-      billing_reason: components['schemas']['OrderBillingReason']
-      /**
-       * Billing Name
-       * @description The name of the customer that should appear on the invoice.
-       */
-      billing_name: string | null
-      billing_address: components['schemas']['Address'] | null
-      /**
-       * Invoice Number
-       * @description The invoice number associated with this order.
-       */
-      invoice_number: string
-      /**
-       * Is Invoice Generated
-       * @description Whether an invoice has been generated for this order.
-       */
-      is_invoice_generated: boolean
-      /**
-       * Seats
-       * @description Number of seats purchased (for seat-based one-time orders).
-       * @default null
-       */
-      seats: number | null
-      /**
-       * Customer Id
-       * Format: uuid4
-       */
-      customer_id: string
-      /** Product Id */
-      product_id: string | null
-      /** Discount Id */
-      discount_id: string | null
-      /** Subscription Id */
-      subscription_id: string | null
-      /** Checkout Id */
-      checkout_id: string | null
-      /** Description */
-      description: string
-      /** Items */
-      items: components['schemas']['OrderItemSchema'][]
-    }
-    /**
-     * OrderItemSchema
-     * @description An order line item.
-     */
-    OrderItemSchema: {
-      /**
-       * Created At
-       * Format: date-time
-       * @description Creation timestamp of the object.
-       */
-      created_at: string
-      /**
-       * Modified At
-       * @description Last modification timestamp of the object.
-       */
-      modified_at: string | null
-      /**
-       * Id
-       * Format: uuid4
-       * @description The ID of the object.
-       */
-      id: string
-      /**
-       * Label
-       * @description Description of the line item charge.
-       * @example Pro Plan
-       */
-      label: string
-      /**
-       * Amount
-       * @description Amount in cents, before discounts and taxes.
-       * @example 10000
-       */
-      amount: number
-      /**
-       * Tax Amount
-       * @description Sales tax amount in cents.
-       * @example 720
-       */
-      tax_amount: number
-      /**
-       * Proration
-       * @description Whether this charge is due to a proration.
-       * @example false
-       */
-      proration: boolean
-      /**
-       * Product Price Id
-       * @description Associated price ID, if any.
-       */
-      product_price_id: string | null
-    }
-    /**
-     * OrderStatus
-     * @enum {string}
-     */
-    OrderStatus: 'pending' | 'paid' | 'refunded' | 'partially_refunded'
-    /** Organization */
-    Organization: {
-      /**
-       * Created At
-       * Format: date-time
-       * @description Creation timestamp of the object.
-       */
-      created_at: string
-      /**
-       * Modified At
-       * @description Last modification timestamp of the object.
-       */
-      modified_at: string | null
-      /**
-       * Id
-       * Format: uuid4
-       * @description The ID of the object.
-       */
-      id: string
-      /**
-       * Name
-       * @description Organization name shown in checkout, customer portal, emails etc.
-       */
-      name: string
-      /**
-       * Slug
-       * @description Unique organization slug in checkout, customer portal and credit card statements.
-       */
-      slug: string
-      /**
-       * Avatar Url
-       * @description Avatar URL shown in checkout, customer portal, emails etc.
-       */
-      avatar_url: string | null
-      /** @description Proration behavior applied when customer updates their subscription from the portal. */
-      proration_behavior: components['schemas']['SubscriptionProrationBehavior']
-      /**
-       * Allow Customer Updates
-       * @description Whether customers can update their subscriptions from the customer portal.
-       */
-      allow_customer_updates: boolean
-      /**
-       * Email
-       * @description Public support email.
-       */
-      email: string | null
-      /**
-       * Website
-       * @description Official website of the organization.
-       */
-      website: string | null
-      /**
-       * Socials
-       * @description Links to social profiles.
-       */
-      socials: components['schemas']['OrganizationSocialLink'][]
-      /** @description Current organization status */
-      status: components['schemas']['OrganizationStatus']
-      /**
-       * Details Submitted At
-       * @description When the business details were submitted.
-       */
-      details_submitted_at: string | null
-      /** @description Organization feature settings */
-      feature_settings:
-        | components['schemas']['OrganizationFeatureSettings']
-        | null
-      /** @description Settings related to subscriptions management */
-      subscription_settings: components['schemas']['OrganizationSubscriptionSettings']
-      /** @description Settings related to notifications */
-      notification_settings: components['schemas']['OrganizationNotificationSettings']
-      /** @description Settings related to customer emails */
-      customer_email_settings: components['schemas']['OrganizationCustomerEmailSettings']
-    }
-    /** OrganizationAccessTokenLeakedEmail */
-    OrganizationAccessTokenLeakedEmail: {
-      /**
-       * Template
-       * @default organization_access_token_leaked
-       * @constant
-       */
-      template: 'organization_access_token_leaked'
-      props: components['schemas']['OrganizationAccessTokenLeakedProps']
-    }
-    /** OrganizationAccessTokenLeakedProps */
-    OrganizationAccessTokenLeakedProps: {
-      /** Email */
-      email: string
-      /** Organization Access Token */
-      organization_access_token: string
-      /** Notifier */
-      notifier: string
-      /** Url */
-      url: string
-    }
-    /** OrganizationAccountUnlinkEmail */
-    OrganizationAccountUnlinkEmail: {
-      /**
-       * Template
-       * @default organization_account_unlink
-       * @constant
-       */
-      template: 'organization_account_unlink'
-      props: components['schemas']['OrganizationAccountUnlinkProps']
-    }
-    /** OrganizationAccountUnlinkProps */
-    OrganizationAccountUnlinkProps: {
-      /** Email */
-      email: string
-      /** Organization Kept Name */
-      organization_kept_name: string
-      /** Organizations Unlinked */
-      organizations_unlinked: string[]
-    }
-    /** OrganizationCustomerEmailSettings */
-    OrganizationCustomerEmailSettings: {
-      /** Order Confirmation */
-      order_confirmation: boolean
-      /** Subscription Cancellation */
-      subscription_cancellation: boolean
-      /** Subscription Confirmation */
-      subscription_confirmation: boolean
-      /** Subscription Cycled */
-      subscription_cycled: boolean
-      /** Subscription Past Due */
-      subscription_past_due: boolean
-      /** Subscription Revoked */
-      subscription_revoked: boolean
-      /** Subscription Uncanceled */
-      subscription_uncanceled: boolean
-      /** Subscription Updated */
-      subscription_updated: boolean
-    }
-    /** OrganizationFeatureSettings */
-    OrganizationFeatureSettings: {
-      /**
-       * Issue Funding Enabled
-       * @description If this organization has issue funding enabled
-       * @default false
-       */
-      issue_funding_enabled: boolean
-      /**
-       * Seat Based Pricing Enabled
-       * @description If this organization has seat-based pricing enabled
-       * @default false
-       */
-      seat_based_pricing_enabled: boolean
-      /**
-       * Revops Enabled
-       * @description If this organization has RevOps enabled
-       * @default false
-       */
-      revops_enabled: boolean
-      /**
-       * Wallets Enabled
-       * @description If this organization has Wallets enabled
-       * @default false
-       */
-      wallets_enabled: boolean
-      /**
-       * Member Model Enabled
-       * @description If this organization has the Member model enabled
-       * @default false
-       */
-      member_model_enabled: boolean
-    }
-    /** OrganizationInviteEmail */
-    OrganizationInviteEmail: {
-      /**
-       * Template
-       * @default organization_invite
-       * @constant
-       */
-      template: 'organization_invite'
-      props: components['schemas']['OrganizationInviteProps']
-    }
-    /** OrganizationInviteProps */
-    OrganizationInviteProps: {
-      /** Email */
-      email: string
-      /** Organization Name */
-      organization_name: string
-      /** Inviter Email */
-      inviter_email: string
-      /** Invite Url */
-      invite_url: string
-    }
-    /** OrganizationNotificationSettings */
-    OrganizationNotificationSettings: {
-      /** New Order */
-      new_order: boolean
-      /** New Subscription */
-      new_subscription: boolean
-    }
-    /** OrganizationReviewedEmail */
-    OrganizationReviewedEmail: {
-      /**
-       * Template
-       * @default organization_reviewed
-       * @constant
-       */
-      template: 'organization_reviewed'
-      props: components['schemas']['OrganizationReviewedProps']
-    }
-    /** OrganizationReviewedProps */
-    OrganizationReviewedProps: {
-      /** Email */
-      email: string
-      organization: components['schemas']['Organization']
-    }
-    /** OrganizationSocialLink */
-    OrganizationSocialLink: {
-      /** @description The social platform of the URL */
-      platform: components['schemas']['OrganizationSocialPlatforms']
-      /**
-       * Url
-       * Format: uri
-       * @description The URL to the organization profile
-       */
-      url: string
-    }
-    /**
-     * OrganizationSocialPlatforms
-     * @enum {string}
-     */
-    OrganizationSocialPlatforms:
-      | 'x'
-      | 'github'
-      | 'facebook'
-      | 'instagram'
-      | 'youtube'
-      | 'tiktok'
-      | 'linkedin'
-      | 'other'
-    /**
-     * OrganizationStatus
-     * @enum {string}
-     */
-    OrganizationStatus:
-      | 'created'
-      | 'onboarding_started'
-      | 'initial_review'
-      | 'ongoing_review'
-      | 'denied'
-      | 'active'
-    /** OrganizationSubscriptionSettings */
-    OrganizationSubscriptionSettings: {
-      /** Allow Multiple Subscriptions */
-      allow_multiple_subscriptions: boolean
-      /** Allow Customer Updates */
-      allow_customer_updates: boolean
-      proration_behavior: components['schemas']['SubscriptionProrationBehavior']
-      /** Benefit Revocation Grace Period */
-      benefit_revocation_grace_period: number
-      /** Prevent Trial Abuse */
-      prevent_trial_abuse: boolean
-    }
-    /** OrganizationUnderReviewEmail */
-    OrganizationUnderReviewEmail: {
-      /**
-       * Template
-       * @default organization_under_review
-       * @constant
-       */
-      template: 'organization_under_review'
-      props: components['schemas']['OrganizationUnderReviewProps']
-    }
-    /** OrganizationUnderReviewProps */
-    OrganizationUnderReviewProps: {
-      /** Email */
-      email: string
-      organization: components['schemas']['Organization']
-    }
-    /** PersonalAccessTokenLeakedEmail */
-    PersonalAccessTokenLeakedEmail: {
-      /**
-       * Template
-       * @default personal_access_token_leaked
-       * @constant
-       */
-      template: 'personal_access_token_leaked'
-      props: components['schemas']['PersonalAccessTokenLeakedProps']
-    }
-    /** PersonalAccessTokenLeakedProps */
-    PersonalAccessTokenLeakedProps: {
-      /** Email */
-      email: string
-      /** Personal Access Token */
-      personal_access_token: string
-      /** Notifier */
-      notifier: string
-      /** Url */
-      url: string
-    }
-    /** ProductEmail */
-    ProductEmail: {
-      /**
-       * Id
-       * Format: uuid4
-       * @description The ID of the object.
-       */
-      id: string
-      /**
-       * Created At
-       * Format: date-time
-       * @description Creation timestamp of the object.
-       */
-      created_at: string
-      /**
-       * Modified At
-       * @description Last modification timestamp of the object.
-       */
-      modified_at: string | null
-      /** @description The interval unit for the trial period. */
-      trial_interval: components['schemas']['TrialInterval'] | null
-      /**
-       * Trial Interval Count
-       * @description The number of interval units for the trial period.
-       */
-      trial_interval_count: number | null
-      /**
-       * Name
-       * @description The name of the product.
-       */
-      name: string
-      /**
-       * Description
-       * @description The description of the product.
-       */
-      description: string | null
-      /** @description The recurring interval of the product. If `None`, the product is a one-time purchase. */
-      recurring_interval:
-        | components['schemas']['SubscriptionRecurringInterval']
-        | null
-      /**
-       * Recurring Interval Count
-       * @description Number of interval units of the subscription. If this is set to 1 the charge will happen every interval (e.g. every month), if set to 2 it will be every other month, and so on. None for one-time products.
-       */
-      recurring_interval_count: number | null
-      /**
-       * Is Recurring
-       * @description Whether the product is a subscription.
-       */
-      is_recurring: boolean
-      /**
-       * Is Archived
-       * @description Whether the product is archived and no longer available.
-       */
-      is_archived: boolean
-      /**
-       * Organization Id
-       * Format: uuid4
-       * @description The ID of the organization owning the product.
-       */
-      organization_id: string
-      /**
-       * Benefits
-       * @description List of benefits granted by the product.
-       */
-      benefits: components['schemas']['Benefit'][]
-    }
-    /** SeatInvitationEmail */
-    SeatInvitationEmail: {
-      /**
-       * Template
-       * @default seat_invitation
-       * @constant
-       */
-      template: 'seat_invitation'
-      props: components['schemas']['SeatInvitationProps']
-    }
-    /** SeatInvitationProps */
-    SeatInvitationProps: {
-      /** Email */
-      email: string
-      organization: components['schemas']['Organization']
-      /** Product Name */
-      product_name: string
-      /** Billing Manager Email */
-      billing_manager_email: string
-      /** Claim Url */
-      claim_url: string
-    }
-    /** SubscriptionCancellationEmail */
-    SubscriptionCancellationEmail: {
-      /**
-       * Template
-       * @default subscription_cancellation
-       * @constant
-       */
-      template: 'subscription_cancellation'
-      props: components['schemas']['SubscriptionCancellationProps']
-    }
-    /** SubscriptionCancellationProps */
-    SubscriptionCancellationProps: {
-      /** Email */
-      email: string
-      organization: components['schemas']['Organization']
-      product: components['schemas']['ProductEmail']
-      subscription: components['schemas']['SubscriptionEmail']
-      /** Url */
-      url: string
-    }
-    /** SubscriptionConfirmationEmail */
-    SubscriptionConfirmationEmail: {
-      /**
-       * Template
-       * @default subscription_confirmation
-       * @constant
-       */
-      template: 'subscription_confirmation'
-      props: components['schemas']['SubscriptionConfirmationProps']
-    }
-    /** SubscriptionConfirmationProps */
-    SubscriptionConfirmationProps: {
-      /** Email */
-      email: string
-      organization: components['schemas']['Organization']
-      product: components['schemas']['ProductEmail']
-      subscription: components['schemas']['SubscriptionEmail']
-      /** Url */
-      url: string
-      order: components['schemas']['OrderEmail']
-    }
-    /** SubscriptionCycledEmail */
-    SubscriptionCycledEmail: {
-      /**
-       * Template
-       * @default subscription_cycled
-       * @constant
-       */
-      template: 'subscription_cycled'
-      props: components['schemas']['SubscriptionCycledProps']
-    }
-    /** SubscriptionCycledProps */
-    SubscriptionCycledProps: {
-      /** Email */
-      email: string
-      organization: components['schemas']['Organization']
-      product: components['schemas']['ProductEmail']
-      subscription: components['schemas']['SubscriptionEmail']
-      /** Url */
-      url: string
-      order: components['schemas']['OrderEmail']
-    }
-    /** SubscriptionEmail */
-    SubscriptionEmail: {
-      /**
-       * Created At
-       * Format: date-time
-       * @description Creation timestamp of the object.
-       */
-      created_at: string
-      /**
-       * Modified At
-       * @description Last modification timestamp of the object.
-       */
-      modified_at: string | null
-      /**
-       * Id
-       * Format: uuid4
-       * @description The ID of the object.
-       */
-      id: string
-      /**
-       * Amount
-       * @description The amount of the subscription.
-       * @example 10000
-       */
-      amount: number
-      /**
-       * Currency
-       * @description The currency of the subscription.
-       * @example usd
-       */
-      currency: string
-      /**
-       * @description The interval at which the subscription recurs.
-       * @example month
-       */
-      recurring_interval: components['schemas']['SubscriptionRecurringInterval']
-      /**
-       * Recurring Interval Count
-       * @description Number of interval units of the subscription. If this is set to 1 the charge will happen every interval (e.g. every month), if set to 2 it will be every other month, and so on.
-       */
-      recurring_interval_count: number
-      /**
-       * @description The status of the subscription.
-       * @example active
-       */
-      status: components['schemas']['SubscriptionStatus']
-      /**
-       * Current Period Start
-       * Format: date-time
-       * @description The start timestamp of the current billing period.
-       */
-      current_period_start: string
-      /**
-       * Current Period End
-       * @description The end timestamp of the current billing period.
-       */
-      current_period_end: string | null
-      /**
-       * Trial Start
-       * @description The start timestamp of the trial period, if any.
-       */
-      trial_start: string | null
-      /**
-       * Trial End
-       * @description The end timestamp of the trial period, if any.
-       */
-      trial_end: string | null
-      /**
-       * Cancel At Period End
-       * @description Whether the subscription will be canceled at the end of the current period.
-       */
-      cancel_at_period_end: boolean
-      /**
-       * Canceled At
-       * @description The timestamp when the subscription was canceled. The subscription might still be active if `cancel_at_period_end` is `true`.
-       */
-      canceled_at: string | null
-      /**
-       * Started At
-       * @description The timestamp when the subscription started.
-       */
-      started_at: string | null
-      /**
-       * Ends At
-       * @description The timestamp when the subscription will end.
-       */
-      ends_at: string | null
-      /**
-       * Ended At
-       * @description The timestamp when the subscription ended.
-       */
-      ended_at: string | null
-      /**
-       * Customer Id
-       * Format: uuid4
-       * @description The ID of the subscribed customer.
-       */
-      customer_id: string
-      /**
-       * Product Id
-       * Format: uuid4
-       * @description The ID of the subscribed product.
-       */
-      product_id: string
-      /**
-       * Discount Id
-       * @description The ID of the applied discount, if any.
-       */
-      discount_id: string | null
-      /** Checkout Id */
-      checkout_id: string | null
-      /**
-       * Seats
-       * @description The number of seats for seat-based subscriptions. None for non-seat subscriptions.
-       * @default null
-       */
-      seats: number | null
-      customer_cancellation_reason:
-        | components['schemas']['CustomerCancellationReason']
-        | null
-      /** Customer Cancellation Comment */
-      customer_cancellation_comment: string | null
-    }
-    /** SubscriptionPastDueEmail */
-    SubscriptionPastDueEmail: {
-      /**
-       * Template
-       * @default subscription_past_due
-       * @constant
-       */
-      template: 'subscription_past_due'
-      props: components['schemas']['SubscriptionPastDueProps']
-    }
-    /** SubscriptionPastDueProps */
-    SubscriptionPastDueProps: {
-      /** Email */
-      email: string
-      organization: components['schemas']['Organization']
-      product: components['schemas']['ProductEmail']
-      subscription: components['schemas']['SubscriptionEmail']
-      /** Url */
-      url: string
-      /**
-       * Payment Url
-       * @default null
-       */
-      payment_url: string | null
-    }
-    /**
-     * SubscriptionProrationBehavior
-     * @enum {string}
-     */
-    SubscriptionProrationBehavior: 'invoice' | 'prorate'
-    /**
-     * SubscriptionRecurringInterval
-     * @enum {string}
-     */
-    SubscriptionRecurringInterval: 'day' | 'week' | 'month' | 'year'
-    /** SubscriptionRevokedEmail */
-    SubscriptionRevokedEmail: {
-      /**
-       * Template
-       * @default subscription_revoked
-       * @constant
-       */
-      template: 'subscription_revoked'
-      props: components['schemas']['SubscriptionRevokedProps']
-    }
-    /** SubscriptionRevokedProps */
-    SubscriptionRevokedProps: {
-      /** Email */
-      email: string
-      organization: components['schemas']['Organization']
-      product: components['schemas']['ProductEmail']
-      subscription: components['schemas']['SubscriptionEmail']
-      /** Url */
-      url: string
-    }
-    /**
-     * SubscriptionStatus
-     * @enum {string}
-     */
-    SubscriptionStatus:
-      | 'incomplete'
-      | 'incomplete_expired'
-      | 'trialing'
-      | 'active'
-      | 'past_due'
-      | 'canceled'
-      | 'unpaid'
-    /** SubscriptionUncanceledEmail */
-    SubscriptionUncanceledEmail: {
-      /**
-       * Template
-       * @default subscription_uncanceled
-       * @constant
-       */
-      template: 'subscription_uncanceled'
-      props: components['schemas']['SubscriptionUncanceledProps']
-    }
-    /** SubscriptionUncanceledProps */
-    SubscriptionUncanceledProps: {
-      /** Email */
-      email: string
-      organization: components['schemas']['Organization']
-      product: components['schemas']['ProductEmail']
-      subscription: components['schemas']['SubscriptionEmail']
-      /** Url */
-      url: string
-    }
-    /** SubscriptionUpdatedEmail */
-    SubscriptionUpdatedEmail: {
-      /**
-       * Template
-       * @default subscription_updated
-       * @constant
-       */
-      template: 'subscription_updated'
-      props: components['schemas']['SubscriptionUpdatedProps']
-    }
-    /** SubscriptionUpdatedProps */
-    SubscriptionUpdatedProps: {
-      /** Email */
-      email: string
-      organization: components['schemas']['Organization']
-      product: components['schemas']['ProductEmail']
-      subscription: components['schemas']['SubscriptionEmail']
-      /** Url */
-      url: string
-      order: components['schemas']['OrderEmail'] | null
-    }
-    /**
-     * TrialInterval
-     * @enum {string}
-     */
-    TrialInterval: 'day' | 'week' | 'month' | 'year'
-    /** WebhookEndpointDisabledEmail */
-    WebhookEndpointDisabledEmail: {
-      /**
-       * Template
-       * @default webhook_endpoint_disabled
-       * @constant
-       */
-      template: 'webhook_endpoint_disabled'
-      props: components['schemas']['WebhookEndpointDisabledProps']
-    }
-    /** WebhookEndpointDisabledProps */
-    WebhookEndpointDisabledProps: {
-      /** Email */
-      email: string
-      organization: components['schemas']['Organization']
-      /** Webhook Endpoint Url */
-      webhook_endpoint_url: string
-      /** Dashboard Url */
-      dashboard_url: string
-    }
-  }
-  responses: never
-  parameters: never
-  requestBodies: never
-  headers: never
-  pathItems: never
+    schemas: {
+        /** Address */
+        Address: {
+            /**
+             * Line1
+             * @default null
+             */
+            line1: string | null;
+            /**
+             * Line2
+             * @default null
+             */
+            line2: string | null;
+            /**
+             * Postal Code
+             * @default null
+             */
+            postal_code: string | null;
+            /**
+             * City
+             * @default null
+             */
+            city: string | null;
+            /**
+             * State
+             * @default null
+             */
+            state: string | null;
+            /**
+             * CountryAlpha2
+             * @example US
+             * @example SE
+             * @example FR
+             * @enum {string}
+             */
+            country: "AD" | "AE" | "AF" | "AG" | "AI" | "AL" | "AM" | "AO" | "AQ" | "AR" | "AS" | "AT" | "AU" | "AW" | "AX" | "AZ" | "BA" | "BB" | "BD" | "BE" | "BF" | "BG" | "BH" | "BI" | "BJ" | "BL" | "BM" | "BN" | "BO" | "BQ" | "BR" | "BS" | "BT" | "BV" | "BW" | "BY" | "BZ" | "CA" | "CC" | "CD" | "CF" | "CG" | "CH" | "CI" | "CK" | "CL" | "CM" | "CN" | "CO" | "CR" | "CU" | "CV" | "CW" | "CX" | "CY" | "CZ" | "DE" | "DJ" | "DK" | "DM" | "DO" | "DZ" | "EC" | "EE" | "EG" | "EH" | "ER" | "ES" | "ET" | "FI" | "FJ" | "FK" | "FM" | "FO" | "FR" | "GA" | "GB" | "GD" | "GE" | "GF" | "GG" | "GH" | "GI" | "GL" | "GM" | "GN" | "GP" | "GQ" | "GR" | "GS" | "GT" | "GU" | "GW" | "GY" | "HK" | "HM" | "HN" | "HR" | "HT" | "HU" | "ID" | "IE" | "IL" | "IM" | "IN" | "IO" | "IQ" | "IR" | "IS" | "IT" | "JE" | "JM" | "JO" | "JP" | "KE" | "KG" | "KH" | "KI" | "KM" | "KN" | "KP" | "KR" | "KW" | "KY" | "KZ" | "LA" | "LB" | "LC" | "LI" | "LK" | "LR" | "LS" | "LT" | "LU" | "LV" | "LY" | "MA" | "MC" | "MD" | "ME" | "MF" | "MG" | "MH" | "MK" | "ML" | "MM" | "MN" | "MO" | "MP" | "MQ" | "MR" | "MS" | "MT" | "MU" | "MV" | "MW" | "MX" | "MY" | "MZ" | "NA" | "NC" | "NE" | "NF" | "NG" | "NI" | "NL" | "NO" | "NP" | "NR" | "NU" | "NZ" | "OM" | "PA" | "PE" | "PF" | "PG" | "PH" | "PK" | "PL" | "PM" | "PN" | "PR" | "PS" | "PT" | "PW" | "PY" | "QA" | "RE" | "RO" | "RS" | "RU" | "RW" | "SA" | "SB" | "SC" | "SD" | "SE" | "SG" | "SH" | "SI" | "SJ" | "SK" | "SL" | "SM" | "SN" | "SO" | "SR" | "SS" | "ST" | "SV" | "SX" | "SY" | "SZ" | "TC" | "TD" | "TF" | "TG" | "TH" | "TJ" | "TK" | "TL" | "TM" | "TN" | "TO" | "TR" | "TT" | "TV" | "TW" | "TZ" | "UA" | "UG" | "UM" | "US" | "UY" | "UZ" | "VA" | "VC" | "VE" | "VG" | "VI" | "VN" | "VU" | "WF" | "WS" | "YE" | "YT" | "ZA" | "ZM" | "ZW";
+        };
+        Benefit: components["schemas"]["BenefitCustom"] | components["schemas"]["BenefitDiscord"] | components["schemas"]["BenefitGitHubRepository"] | components["schemas"]["BenefitDownloadables"] | components["schemas"]["BenefitLicenseKeys"] | components["schemas"]["BenefitMeterCredit"] | components["schemas"]["BenefitFeatureFlag"];
+        /**
+         * BenefitCustom
+         * @description A benefit of type `custom`.
+         *
+         *     Use it to grant any kind of benefit that doesn't fit in the other types.
+         */
+        BenefitCustom: {
+            /**
+             * Id
+             * Format: uuid4
+             * @description The ID of the benefit.
+             */
+            id: string;
+            /**
+             * Created At
+             * Format: date-time
+             * @description Creation timestamp of the object.
+             */
+            created_at: string;
+            /**
+             * Modified At
+             * @description Last modification timestamp of the object.
+             */
+            modified_at: string | null;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            type: "custom";
+            /**
+             * Description
+             * @description The description of the benefit.
+             */
+            description: string;
+            /**
+             * Selectable
+             * @description Whether the benefit is selectable when creating a product.
+             */
+            selectable: boolean;
+            /**
+             * Deletable
+             * @description Whether the benefit is deletable.
+             */
+            deletable: boolean;
+            /**
+             * Organization Id
+             * Format: uuid4
+             * @description The ID of the organization owning the benefit.
+             */
+            organization_id: string;
+            metadata: components["schemas"]["MetadataOutputType"];
+            properties: components["schemas"]["BenefitCustomProperties"];
+        };
+        /**
+         * BenefitCustomProperties
+         * @description Properties for a benefit of type `custom`.
+         */
+        BenefitCustomProperties: {
+            /** Note */
+            note: (string | null) | null;
+        };
+        /**
+         * BenefitDiscord
+         * @description A benefit of type `discord`.
+         *
+         *     Use it to automatically invite your backers to a Discord server.
+         */
+        BenefitDiscord: {
+            /**
+             * Id
+             * Format: uuid4
+             * @description The ID of the benefit.
+             */
+            id: string;
+            /**
+             * Created At
+             * Format: date-time
+             * @description Creation timestamp of the object.
+             */
+            created_at: string;
+            /**
+             * Modified At
+             * @description Last modification timestamp of the object.
+             */
+            modified_at: string | null;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            type: "discord";
+            /**
+             * Description
+             * @description The description of the benefit.
+             */
+            description: string;
+            /**
+             * Selectable
+             * @description Whether the benefit is selectable when creating a product.
+             */
+            selectable: boolean;
+            /**
+             * Deletable
+             * @description Whether the benefit is deletable.
+             */
+            deletable: boolean;
+            /**
+             * Organization Id
+             * Format: uuid4
+             * @description The ID of the organization owning the benefit.
+             */
+            organization_id: string;
+            metadata: components["schemas"]["MetadataOutputType"];
+            properties: components["schemas"]["BenefitDiscordProperties"];
+        };
+        /**
+         * BenefitDiscordProperties
+         * @description Properties for a benefit of type `discord`.
+         */
+        BenefitDiscordProperties: {
+            /**
+             * Guild Id
+             * @description The ID of the Discord server.
+             */
+            guild_id: string;
+            /**
+             * Role Id
+             * @description The ID of the Discord role to grant.
+             */
+            role_id: string;
+            /**
+             * Kick Member
+             * @description Whether to kick the member from the Discord server on revocation.
+             */
+            kick_member: boolean;
+            /** Guild Token */
+            readonly guild_token: string;
+        };
+        /** BenefitDownloadables */
+        BenefitDownloadables: {
+            /**
+             * Id
+             * Format: uuid4
+             * @description The ID of the benefit.
+             */
+            id: string;
+            /**
+             * Created At
+             * Format: date-time
+             * @description Creation timestamp of the object.
+             */
+            created_at: string;
+            /**
+             * Modified At
+             * @description Last modification timestamp of the object.
+             */
+            modified_at: string | null;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            type: "downloadables";
+            /**
+             * Description
+             * @description The description of the benefit.
+             */
+            description: string;
+            /**
+             * Selectable
+             * @description Whether the benefit is selectable when creating a product.
+             */
+            selectable: boolean;
+            /**
+             * Deletable
+             * @description Whether the benefit is deletable.
+             */
+            deletable: boolean;
+            /**
+             * Organization Id
+             * Format: uuid4
+             * @description The ID of the organization owning the benefit.
+             */
+            organization_id: string;
+            metadata: components["schemas"]["MetadataOutputType"];
+            properties: components["schemas"]["BenefitDownloadablesProperties"];
+        };
+        /** BenefitDownloadablesProperties */
+        BenefitDownloadablesProperties: {
+            /** Archived */
+            archived: {
+                [key: string]: boolean;
+            };
+            /** Files */
+            files: string[];
+        };
+        /**
+         * BenefitFeatureFlag
+         * @description A benefit of type `feature_flag`.
+         *
+         *     Use it to grant feature flags with key-value metadata
+         *     that can be queried via the API and webhooks.
+         */
+        BenefitFeatureFlag: {
+            /**
+             * Id
+             * Format: uuid4
+             * @description The ID of the benefit.
+             */
+            id: string;
+            /**
+             * Created At
+             * Format: date-time
+             * @description Creation timestamp of the object.
+             */
+            created_at: string;
+            /**
+             * Modified At
+             * @description Last modification timestamp of the object.
+             */
+            modified_at: string | null;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            type: "feature_flag";
+            /**
+             * Description
+             * @description The description of the benefit.
+             */
+            description: string;
+            /**
+             * Selectable
+             * @description Whether the benefit is selectable when creating a product.
+             */
+            selectable: boolean;
+            /**
+             * Deletable
+             * @description Whether the benefit is deletable.
+             */
+            deletable: boolean;
+            /**
+             * Organization Id
+             * Format: uuid4
+             * @description The ID of the organization owning the benefit.
+             */
+            organization_id: string;
+            metadata: components["schemas"]["MetadataOutputType"];
+            properties: components["schemas"]["BenefitFeatureFlagProperties"];
+        };
+        /**
+         * BenefitFeatureFlagProperties
+         * @description Properties for a benefit of type `feature_flag`.
+         */
+        BenefitFeatureFlagProperties: Record<string, never>;
+        /**
+         * BenefitGitHubRepository
+         * @description A benefit of type `github_repository`.
+         *
+         *     Use it to automatically invite your backers to a private GitHub repository.
+         */
+        BenefitGitHubRepository: {
+            /**
+             * Id
+             * Format: uuid4
+             * @description The ID of the benefit.
+             */
+            id: string;
+            /**
+             * Created At
+             * Format: date-time
+             * @description Creation timestamp of the object.
+             */
+            created_at: string;
+            /**
+             * Modified At
+             * @description Last modification timestamp of the object.
+             */
+            modified_at: string | null;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            type: "github_repository";
+            /**
+             * Description
+             * @description The description of the benefit.
+             */
+            description: string;
+            /**
+             * Selectable
+             * @description Whether the benefit is selectable when creating a product.
+             */
+            selectable: boolean;
+            /**
+             * Deletable
+             * @description Whether the benefit is deletable.
+             */
+            deletable: boolean;
+            /**
+             * Organization Id
+             * Format: uuid4
+             * @description The ID of the organization owning the benefit.
+             */
+            organization_id: string;
+            metadata: components["schemas"]["MetadataOutputType"];
+            properties: components["schemas"]["BenefitGitHubRepositoryProperties"];
+        };
+        /**
+         * BenefitGitHubRepositoryProperties
+         * @description Properties for a benefit of type `github_repository`.
+         */
+        BenefitGitHubRepositoryProperties: {
+            /**
+             * Repository Owner
+             * @description The owner of the repository.
+             * @example polarsource
+             */
+            repository_owner: string;
+            /**
+             * Repository Name
+             * @description The name of the repository.
+             * @example private_repo
+             */
+            repository_name: string;
+            /**
+             * Permission
+             * @description The permission level to grant. Read more about roles and their permissions on [GitHub documentation](https://docs.github.com/en/organizations/managing-user-access-to-your-organizations-repositories/managing-repository-roles/repository-roles-for-an-organization#permissions-for-each-role).
+             * @enum {string}
+             */
+            permission: "pull" | "triage" | "push" | "maintain" | "admin";
+        };
+        /** BenefitLicenseKeyActivationProperties */
+        BenefitLicenseKeyActivationProperties: {
+            /** Limit */
+            limit: number;
+            /** Enable Customer Admin */
+            enable_customer_admin: boolean;
+        };
+        /** BenefitLicenseKeyExpirationProperties */
+        BenefitLicenseKeyExpirationProperties: {
+            /** Ttl */
+            ttl: number;
+            /**
+             * Timeframe
+             * @enum {string}
+             */
+            timeframe: "year" | "month" | "day";
+        };
+        /** BenefitLicenseKeys */
+        BenefitLicenseKeys: {
+            /**
+             * Id
+             * Format: uuid4
+             * @description The ID of the benefit.
+             */
+            id: string;
+            /**
+             * Created At
+             * Format: date-time
+             * @description Creation timestamp of the object.
+             */
+            created_at: string;
+            /**
+             * Modified At
+             * @description Last modification timestamp of the object.
+             */
+            modified_at: string | null;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            type: "license_keys";
+            /**
+             * Description
+             * @description The description of the benefit.
+             */
+            description: string;
+            /**
+             * Selectable
+             * @description Whether the benefit is selectable when creating a product.
+             */
+            selectable: boolean;
+            /**
+             * Deletable
+             * @description Whether the benefit is deletable.
+             */
+            deletable: boolean;
+            /**
+             * Organization Id
+             * Format: uuid4
+             * @description The ID of the organization owning the benefit.
+             */
+            organization_id: string;
+            metadata: components["schemas"]["MetadataOutputType"];
+            properties: components["schemas"]["BenefitLicenseKeysProperties"];
+        };
+        /** BenefitLicenseKeysProperties */
+        BenefitLicenseKeysProperties: {
+            /** Prefix */
+            prefix: string | null;
+            expires: components["schemas"]["BenefitLicenseKeyExpirationProperties"] | null;
+            activations: components["schemas"]["BenefitLicenseKeyActivationProperties"] | null;
+            /** Limit Usage */
+            limit_usage: number | null;
+        };
+        /**
+         * BenefitMeterCredit
+         * @description A benefit of type `meter_unit`.
+         *
+         *     Use it to grant a number of units on a specific meter.
+         */
+        BenefitMeterCredit: {
+            /**
+             * Id
+             * Format: uuid4
+             * @description The ID of the benefit.
+             */
+            id: string;
+            /**
+             * Created At
+             * Format: date-time
+             * @description Creation timestamp of the object.
+             */
+            created_at: string;
+            /**
+             * Modified At
+             * @description Last modification timestamp of the object.
+             */
+            modified_at: string | null;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            type: "meter_credit";
+            /**
+             * Description
+             * @description The description of the benefit.
+             */
+            description: string;
+            /**
+             * Selectable
+             * @description Whether the benefit is selectable when creating a product.
+             */
+            selectable: boolean;
+            /**
+             * Deletable
+             * @description Whether the benefit is deletable.
+             */
+            deletable: boolean;
+            /**
+             * Organization Id
+             * Format: uuid4
+             * @description The ID of the organization owning the benefit.
+             */
+            organization_id: string;
+            metadata: components["schemas"]["MetadataOutputType"];
+            properties: components["schemas"]["BenefitMeterCreditProperties"];
+        };
+        /**
+         * BenefitMeterCreditProperties
+         * @description Properties for a benefit of type `meter_unit`.
+         */
+        BenefitMeterCreditProperties: {
+            /** Units */
+            units: number;
+            /** Rollover */
+            rollover: boolean;
+            /**
+             * Meter Id
+             * Format: uuid4
+             */
+            meter_id: string;
+        };
+        /**
+         * CustomerCancellationReason
+         * @enum {string}
+         */
+        CustomerCancellationReason: "customer_service" | "low_quality" | "missing_features" | "switched_service" | "too_complex" | "too_expensive" | "unused" | "other";
+        /** CustomerPortalSubscriptionSettings */
+        CustomerPortalSubscriptionSettings: {
+            /** Update Seats */
+            update_seats: boolean;
+            /** Update Plan */
+            update_plan: boolean;
+        };
+        /** CustomerPortalUsageSettings */
+        CustomerPortalUsageSettings: {
+            /** Show */
+            show: boolean;
+        };
+        /** CustomerSessionCodeEmail */
+        CustomerSessionCodeEmail: {
+            /**
+             * Template
+             * @default customer_session_code
+             * @constant
+             */
+            template: "customer_session_code";
+            props: components["schemas"]["CustomerSessionCodeProps"];
+        };
+        /** CustomerSessionCodeProps */
+        CustomerSessionCodeProps: {
+            /** Email */
+            email: string;
+            organization: components["schemas"]["Organization"];
+            /** Code */
+            code: string;
+            /** Code Lifetime Minutes */
+            code_lifetime_minutes: number;
+            /** Url */
+            url: string;
+        };
+        /** EmailUpdateEmail */
+        EmailUpdateEmail: {
+            /**
+             * Template
+             * @default email_update
+             * @constant
+             */
+            template: "email_update";
+            props: components["schemas"]["EmailUpdateProps"];
+        };
+        /** EmailUpdateProps */
+        EmailUpdateProps: {
+            /** Email */
+            email: string;
+            /** Token Lifetime Minutes */
+            token_lifetime_minutes: number;
+            /** Url */
+            url: string;
+        };
+        /** LoginCodeEmail */
+        LoginCodeEmail: {
+            /**
+             * Template
+             * @default login_code
+             * @constant
+             */
+            template: "login_code";
+            props: components["schemas"]["LoginCodeProps"];
+        };
+        /** LoginCodeProps */
+        LoginCodeProps: {
+            /** Email */
+            email: string;
+            /** Code */
+            code: string;
+            /** Code Lifetime Minutes */
+            code_lifetime_minutes: number;
+        };
+        /** MaintainerAccountCreditsGrantedNotificationPayload */
+        MaintainerAccountCreditsGrantedNotificationPayload: {
+            /** Organization Name */
+            organization_name: string;
+            /** Amount */
+            amount: number;
+            /**
+             * Currency
+             * @default usd
+             */
+            currency: string;
+            /** Formatted Amount */
+            readonly formatted_amount: string;
+        };
+        /** MaintainerCreateAccountNotificationPayload */
+        MaintainerCreateAccountNotificationPayload: {
+            /** Organization Name */
+            organization_name: string;
+            /** Url */
+            url: string;
+        };
+        /** MaintainerNewPaidSubscriptionNotificationPayload */
+        MaintainerNewPaidSubscriptionNotificationPayload: {
+            /** Subscriber Name */
+            subscriber_name: string;
+            /** Tier Name */
+            tier_name: string;
+            /** Tier Price Amount */
+            tier_price_amount: number | null;
+            /** Tier Price Recurring Interval */
+            tier_price_recurring_interval: string;
+            /** Tier Organization Name */
+            tier_organization_name: string;
+            /**
+             * Tier Organization Slug
+             * @default null
+             */
+            tier_organization_slug: string | null;
+            /**
+             * Subscription Id
+             * @default null
+             */
+            subscription_id: string | null;
+            /**
+             * Currency
+             * @default usd
+             */
+            currency: string;
+            /** Formatted Price Amount */
+            readonly formatted_price_amount: string;
+        };
+        /** MaintainerNewProductSaleNotificationPayload */
+        MaintainerNewProductSaleNotificationPayload: {
+            /** Product Name */
+            product_name: string;
+            /** Product Price Amount */
+            product_price_amount: number;
+            /**
+             * Customer Name
+             * @default
+             */
+            customer_name: string;
+            /**
+             * Organization Name
+             * @default
+             */
+            organization_name: string;
+            /**
+             * Customer Email
+             * @default null
+             */
+            customer_email: string | null;
+            /**
+             * Billing Address Country
+             * @default null
+             */
+            billing_address_country: string | null;
+            /**
+             * Billing Address City
+             * @default null
+             */
+            billing_address_city: string | null;
+            /**
+             * Billing Address Line1
+             * @default null
+             */
+            billing_address_line1: string | null;
+            /**
+             * Product Image Url
+             * @default null
+             */
+            product_image_url: string | null;
+            /**
+             * Order Id
+             * @default null
+             */
+            order_id: string | null;
+            /**
+             * Order Date
+             * @default null
+             */
+            order_date: string | null;
+            /**
+             * Organization Slug
+             * @default null
+             */
+            organization_slug: string | null;
+            /** @default null */
+            billing_reason: components["schemas"]["OrderBillingReasonInternal"] | null;
+            /**
+             * Currency
+             * @default usd
+             */
+            currency: string;
+            /** Formatted Price Amount */
+            readonly formatted_price_amount: string;
+            /** Formatted Billing Reason */
+            readonly formatted_billing_reason: string | null;
+            /** Formatted Address Country */
+            readonly formatted_address_country: string | null;
+            /** Order Url */
+            readonly order_url: string | null;
+        };
+        MetadataOutputType: {
+            [key: string]: string | number | boolean;
+        };
+        /** NotificationCreateAccountEmail */
+        NotificationCreateAccountEmail: {
+            /**
+             * Template
+             * @default notification_create_account
+             * @constant
+             */
+            template: "notification_create_account";
+            props: components["schemas"]["MaintainerCreateAccountNotificationPayload"];
+        };
+        /** NotificationCreditsGrantedEmail */
+        NotificationCreditsGrantedEmail: {
+            /**
+             * Template
+             * @default notification_credits_granted
+             * @constant
+             */
+            template: "notification_credits_granted";
+            props: components["schemas"]["MaintainerAccountCreditsGrantedNotificationPayload"];
+        };
+        /** NotificationNewSaleEmail */
+        NotificationNewSaleEmail: {
+            /**
+             * Template
+             * @default notification_new_sale
+             * @constant
+             */
+            template: "notification_new_sale";
+            props: components["schemas"]["MaintainerNewProductSaleNotificationPayload"];
+        };
+        /** NotificationNewSubscriptionEmail */
+        NotificationNewSubscriptionEmail: {
+            /**
+             * Template
+             * @default notification_new_subscription
+             * @constant
+             */
+            template: "notification_new_subscription";
+            props: components["schemas"]["MaintainerNewPaidSubscriptionNotificationPayload"];
+        };
+        /** OAuth2LeakedClientEmail */
+        OAuth2LeakedClientEmail: {
+            /**
+             * Template
+             * @default oauth2_leaked_client
+             * @constant
+             */
+            template: "oauth2_leaked_client";
+            props: components["schemas"]["OAuth2LeakedClientProps"];
+        };
+        /** OAuth2LeakedClientProps */
+        OAuth2LeakedClientProps: {
+            /** Email */
+            email: string;
+            /** Token Type */
+            token_type: string;
+            /** Client Name */
+            client_name: string;
+            /** Notifier */
+            notifier: string;
+            /** Url */
+            url: string;
+        };
+        /** OAuth2LeakedTokenEmail */
+        OAuth2LeakedTokenEmail: {
+            /**
+             * Template
+             * @default oauth2_leaked_token
+             * @constant
+             */
+            template: "oauth2_leaked_token";
+            props: components["schemas"]["OAuth2LeakedTokenProps"];
+        };
+        /** OAuth2LeakedTokenProps */
+        OAuth2LeakedTokenProps: {
+            /** Email */
+            email: string;
+            /** Client Name */
+            client_name: string;
+            /** Notifier */
+            notifier: string;
+            /** Url */
+            url: string;
+        };
+        /**
+         * OrderBillingReason
+         * @enum {string}
+         */
+        OrderBillingReason: "purchase" | "subscription_create" | "subscription_cycle" | "subscription_update";
+        /**
+         * OrderBillingReasonInternal
+         * @description Internal billing reasons with additional granularity.
+         * @enum {string}
+         */
+        OrderBillingReasonInternal: "purchase" | "subscription_create" | "subscription_cycle" | "subscription_cycle_after_trial" | "subscription_update";
+        /** OrderConfirmationEmail */
+        OrderConfirmationEmail: {
+            /**
+             * Template
+             * @default order_confirmation
+             * @constant
+             */
+            template: "order_confirmation";
+            props: components["schemas"]["OrderConfirmationProps"];
+        };
+        /** OrderConfirmationProps */
+        OrderConfirmationProps: {
+            /** Email */
+            email: string;
+            organization: components["schemas"]["Organization"];
+            product: components["schemas"]["ProductEmail"] | null;
+            order: components["schemas"]["OrderEmail"];
+            /** Url */
+            url: string;
+        };
+        /** OrderEmail */
+        OrderEmail: {
+            /**
+             * Id
+             * Format: uuid4
+             * @description The ID of the object.
+             */
+            id: string;
+            /**
+             * Created At
+             * Format: date-time
+             * @description Creation timestamp of the object.
+             */
+            created_at: string;
+            /**
+             * Modified At
+             * @description Last modification timestamp of the object.
+             */
+            modified_at: string | null;
+            /** @example paid */
+            status: components["schemas"]["OrderStatus"];
+            /**
+             * Paid
+             * @description Whether the order has been paid for.
+             * @example true
+             */
+            paid: boolean;
+            /**
+             * Subtotal Amount
+             * @description Amount in cents, before discounts and taxes.
+             * @example 10000
+             */
+            subtotal_amount: number;
+            /**
+             * Discount Amount
+             * @description Discount amount in cents.
+             * @example 1000
+             */
+            discount_amount: number;
+            /**
+             * Net Amount
+             * @description Amount in cents, after discounts but before taxes.
+             * @example 9000
+             */
+            net_amount: number;
+            /**
+             * Tax Amount
+             * @description Sales tax amount in cents.
+             * @example 720
+             */
+            tax_amount: number;
+            /**
+             * Total Amount
+             * @description Amount in cents, after discounts and taxes.
+             * @example 9720
+             */
+            total_amount: number;
+            /**
+             * Applied Balance Amount
+             * @description Customer's balance amount applied to this invoice. Can increase the total amount paid, if the customer has a negative balance,  or decrease it, if the customer has a positive balance.Amount in cents.
+             * @example 0
+             */
+            applied_balance_amount: number;
+            /**
+             * Due Amount
+             * @description Amount in cents that is due for this order.
+             * @example 0
+             */
+            due_amount: number;
+            /**
+             * Refunded Amount
+             * @description Amount refunded in cents.
+             * @example 0
+             */
+            refunded_amount: number;
+            /**
+             * Refunded Tax Amount
+             * @description Sales tax refunded in cents.
+             * @example 0
+             */
+            refunded_tax_amount: number;
+            /**
+             * Currency
+             * @example usd
+             */
+            currency: string;
+            billing_reason: components["schemas"]["OrderBillingReason"];
+            /**
+             * Billing Name
+             * @description The name of the customer that should appear on the invoice.
+             */
+            billing_name: string | null;
+            billing_address: components["schemas"]["Address"] | null;
+            /**
+             * Invoice Number
+             * @description The invoice number associated with this order.
+             */
+            invoice_number: string;
+            /**
+             * Is Invoice Generated
+             * @description Whether an invoice has been generated for this order.
+             */
+            is_invoice_generated: boolean;
+            /**
+             * Seats
+             * @description Number of seats purchased (for seat-based one-time orders).
+             * @default null
+             */
+            seats: number | null;
+            /**
+             * Customer Id
+             * Format: uuid4
+             */
+            customer_id: string;
+            /** Product Id */
+            product_id: string | null;
+            /** Discount Id */
+            discount_id: string | null;
+            /** Subscription Id */
+            subscription_id: string | null;
+            /** Checkout Id */
+            checkout_id: string | null;
+            /** Description */
+            description: string;
+            /** Items */
+            items: components["schemas"]["OrderItemSchema"][];
+        };
+        /**
+         * OrderItemSchema
+         * @description An order line item.
+         */
+        OrderItemSchema: {
+            /**
+             * Created At
+             * Format: date-time
+             * @description Creation timestamp of the object.
+             */
+            created_at: string;
+            /**
+             * Modified At
+             * @description Last modification timestamp of the object.
+             */
+            modified_at: string | null;
+            /**
+             * Id
+             * Format: uuid4
+             * @description The ID of the object.
+             */
+            id: string;
+            /**
+             * Label
+             * @description Description of the line item charge.
+             * @example Pro Plan
+             */
+            label: string;
+            /**
+             * Amount
+             * @description Amount in cents, before discounts and taxes.
+             * @example 10000
+             */
+            amount: number;
+            /**
+             * Tax Amount
+             * @description Sales tax amount in cents.
+             * @example 720
+             */
+            tax_amount: number;
+            /**
+             * Proration
+             * @description Whether this charge is due to a proration.
+             * @example false
+             */
+            proration: boolean;
+            /**
+             * Product Price Id
+             * @description Associated price ID, if any.
+             */
+            product_price_id: string | null;
+        };
+        /**
+         * OrderStatus
+         * @enum {string}
+         */
+        OrderStatus: "pending" | "paid" | "refunded" | "partially_refunded" | "void";
+        /** Organization */
+        Organization: {
+            /**
+             * Created At
+             * Format: date-time
+             * @description Creation timestamp of the object.
+             */
+            created_at: string;
+            /**
+             * Modified At
+             * @description Last modification timestamp of the object.
+             */
+            modified_at: string | null;
+            /**
+             * Id
+             * Format: uuid4
+             * @description The ID of the object.
+             */
+            id: string;
+            /**
+             * Name
+             * @description Organization name shown in checkout, customer portal, emails etc.
+             */
+            name: string;
+            /**
+             * Slug
+             * @description Unique organization slug in checkout, customer portal and credit card statements.
+             */
+            slug: string;
+            /**
+             * Avatar Url
+             * @description Avatar URL shown in checkout, customer portal, emails etc.
+             */
+            avatar_url: string | null;
+            /** @description Proration behavior applied when customer updates their subscription from the portal. */
+            proration_behavior: components["schemas"]["SubscriptionProrationBehavior"];
+            /**
+             * Allow Customer Updates
+             * @description Whether customers can update their subscriptions from the customer portal.
+             */
+            allow_customer_updates: boolean;
+            /**
+             * Email
+             * @description Public support email.
+             */
+            email: string | null;
+            /**
+             * Website
+             * @description Official website of the organization.
+             */
+            website: string | null;
+            /**
+             * Socials
+             * @description Links to social profiles.
+             */
+            socials: components["schemas"]["OrganizationSocialLink"][];
+            /** @description Current organization status */
+            status: components["schemas"]["OrganizationStatus"];
+            /**
+             * Details Submitted At
+             * @description When the business details were submitted.
+             */
+            details_submitted_at: string | null;
+            /**
+             * Default Presentment Currency
+             * @description Default presentment currency. Used as fallback in checkout and customer portal, if the customer's local currency is not available.
+             */
+            default_presentment_currency: string;
+            /** @description Organization feature settings */
+            feature_settings: components["schemas"]["OrganizationFeatureSettings"] | null;
+            /** @description Settings related to subscriptions management */
+            subscription_settings: components["schemas"]["OrganizationSubscriptionSettings"];
+            /** @description Settings related to notifications */
+            notification_settings: components["schemas"]["OrganizationNotificationSettings"];
+            /** @description Settings related to customer emails */
+            customer_email_settings: components["schemas"]["OrganizationCustomerEmailSettings"];
+            /** @description Settings related to the customer portal */
+            customer_portal_settings: components["schemas"]["OrganizationCustomerPortalSettings"];
+        };
+        /** OrganizationAccessTokenLeakedEmail */
+        OrganizationAccessTokenLeakedEmail: {
+            /**
+             * Template
+             * @default organization_access_token_leaked
+             * @constant
+             */
+            template: "organization_access_token_leaked";
+            props: components["schemas"]["OrganizationAccessTokenLeakedProps"];
+        };
+        /** OrganizationAccessTokenLeakedProps */
+        OrganizationAccessTokenLeakedProps: {
+            /** Email */
+            email: string;
+            /** Organization Access Token */
+            organization_access_token: string;
+            /** Notifier */
+            notifier: string;
+            /** Url */
+            url: string;
+        };
+        /** OrganizationAccountUnlinkEmail */
+        OrganizationAccountUnlinkEmail: {
+            /**
+             * Template
+             * @default organization_account_unlink
+             * @constant
+             */
+            template: "organization_account_unlink";
+            props: components["schemas"]["OrganizationAccountUnlinkProps"];
+        };
+        /** OrganizationAccountUnlinkProps */
+        OrganizationAccountUnlinkProps: {
+            /** Email */
+            email: string;
+            /** Organization Kept Name */
+            organization_kept_name: string;
+            /** Organizations Unlinked */
+            organizations_unlinked: string[];
+        };
+        /** OrganizationCustomerEmailSettings */
+        OrganizationCustomerEmailSettings: {
+            /** Order Confirmation */
+            order_confirmation: boolean;
+            /** Subscription Cancellation */
+            subscription_cancellation: boolean;
+            /** Subscription Confirmation */
+            subscription_confirmation: boolean;
+            /** Subscription Cycled */
+            subscription_cycled: boolean;
+            /** Subscription Cycled After Trial */
+            subscription_cycled_after_trial: boolean;
+            /** Subscription Past Due */
+            subscription_past_due: boolean;
+            /** Subscription Revoked */
+            subscription_revoked: boolean;
+            /** Subscription Uncanceled */
+            subscription_uncanceled: boolean;
+            /** Subscription Updated */
+            subscription_updated: boolean;
+        };
+        /** OrganizationCustomerPortalSettings */
+        OrganizationCustomerPortalSettings: {
+            usage: components["schemas"]["CustomerPortalUsageSettings"];
+            subscription: components["schemas"]["CustomerPortalSubscriptionSettings"];
+        };
+        /** OrganizationFeatureSettings */
+        OrganizationFeatureSettings: {
+            /**
+             * Issue Funding Enabled
+             * @description If this organization has issue funding enabled
+             * @default false
+             */
+            issue_funding_enabled: boolean;
+            /**
+             * Seat Based Pricing Enabled
+             * @description If this organization has seat-based pricing enabled
+             * @default false
+             */
+            seat_based_pricing_enabled: boolean;
+            /**
+             * Revops Enabled
+             * @description If this organization has RevOps enabled
+             * @default false
+             */
+            revops_enabled: boolean;
+            /**
+             * Wallets Enabled
+             * @description If this organization has Wallets enabled
+             * @default false
+             */
+            wallets_enabled: boolean;
+            /**
+             * Member Model Enabled
+             * @description If this organization has the Member model enabled
+             * @default false
+             */
+            member_model_enabled: boolean;
+            /**
+             * Tinybird Read
+             * @description If this organization reads from Tinybird
+             * @default false
+             */
+            tinybird_read: boolean;
+            /**
+             * Tinybird Compare
+             * @description If this organization compares Tinybird results with database
+             * @default false
+             */
+            tinybird_compare: boolean;
+            /**
+             * Checkout Localization Enabled
+             * @description If this organization has checkout localization enabled
+             * @default false
+             */
+            checkout_localization_enabled: boolean;
+            /**
+             * Overview Metrics
+             * @description Ordered list of metric slugs shown on the dashboard overview.
+             * @default null
+             */
+            overview_metrics: string[] | null;
+        };
+        /** OrganizationInviteEmail */
+        OrganizationInviteEmail: {
+            /**
+             * Template
+             * @default organization_invite
+             * @constant
+             */
+            template: "organization_invite";
+            props: components["schemas"]["OrganizationInviteProps"];
+        };
+        /** OrganizationInviteProps */
+        OrganizationInviteProps: {
+            /** Email */
+            email: string;
+            /** Organization Name */
+            organization_name: string;
+            /** Inviter Email */
+            inviter_email: string;
+            /** Invite Url */
+            invite_url: string;
+        };
+        /** OrganizationNotificationSettings */
+        OrganizationNotificationSettings: {
+            /** New Order */
+            new_order: boolean;
+            /** New Subscription */
+            new_subscription: boolean;
+        };
+        /** OrganizationReviewedEmail */
+        OrganizationReviewedEmail: {
+            /**
+             * Template
+             * @default organization_reviewed
+             * @constant
+             */
+            template: "organization_reviewed";
+            props: components["schemas"]["OrganizationReviewedProps"];
+        };
+        /** OrganizationReviewedProps */
+        OrganizationReviewedProps: {
+            /** Email */
+            email: string;
+            organization: components["schemas"]["Organization"];
+        };
+        /** OrganizationSocialLink */
+        OrganizationSocialLink: {
+            /** @description The social platform of the URL */
+            platform: components["schemas"]["OrganizationSocialPlatforms"];
+            /**
+             * Url
+             * Format: uri
+             * @description The URL to the organization profile
+             */
+            url: string;
+        };
+        /**
+         * OrganizationSocialPlatforms
+         * @enum {string}
+         */
+        OrganizationSocialPlatforms: "x" | "github" | "facebook" | "instagram" | "youtube" | "tiktok" | "linkedin" | "threads" | "discord" | "other";
+        /**
+         * OrganizationStatus
+         * @enum {string}
+         */
+        OrganizationStatus: "created" | "onboarding_started" | "initial_review" | "ongoing_review" | "denied" | "active";
+        /** OrganizationSubscriptionSettings */
+        OrganizationSubscriptionSettings: {
+            /** Allow Multiple Subscriptions */
+            allow_multiple_subscriptions: boolean;
+            /** Allow Customer Updates */
+            allow_customer_updates: boolean;
+            proration_behavior: components["schemas"]["SubscriptionProrationBehavior"];
+            /** Benefit Revocation Grace Period */
+            benefit_revocation_grace_period: number;
+            /** Prevent Trial Abuse */
+            prevent_trial_abuse: boolean;
+        };
+        /** OrganizationUnderReviewEmail */
+        OrganizationUnderReviewEmail: {
+            /**
+             * Template
+             * @default organization_under_review
+             * @constant
+             */
+            template: "organization_under_review";
+            props: components["schemas"]["OrganizationUnderReviewProps"];
+        };
+        /** OrganizationUnderReviewProps */
+        OrganizationUnderReviewProps: {
+            /** Email */
+            email: string;
+            organization: components["schemas"]["Organization"];
+        };
+        /** PayoutScheduledEmail */
+        PayoutScheduledEmail: {
+            /**
+             * Template
+             * @default payout_scheduled
+             * @constant
+             */
+            template: "payout_scheduled";
+            props: components["schemas"]["PayoutScheduledProps"];
+        };
+        /** PayoutScheduledProps */
+        PayoutScheduledProps: {
+            /** Email */
+            email: string;
+            /** Formatted Amount */
+            formatted_amount: string;
+            /**
+             * Account Holder Name
+             * @default null
+             */
+            account_holder_name: string | null;
+        };
+        /** PersonalAccessTokenLeakedEmail */
+        PersonalAccessTokenLeakedEmail: {
+            /**
+             * Template
+             * @default personal_access_token_leaked
+             * @constant
+             */
+            template: "personal_access_token_leaked";
+            props: components["schemas"]["PersonalAccessTokenLeakedProps"];
+        };
+        /** PersonalAccessTokenLeakedProps */
+        PersonalAccessTokenLeakedProps: {
+            /** Email */
+            email: string;
+            /** Personal Access Token */
+            personal_access_token: string;
+            /** Notifier */
+            notifier: string;
+            /** Url */
+            url: string;
+        };
+        /** ProductEmail */
+        ProductEmail: {
+            /**
+             * Id
+             * Format: uuid4
+             * @description The ID of the object.
+             */
+            id: string;
+            /**
+             * Created At
+             * Format: date-time
+             * @description Creation timestamp of the object.
+             */
+            created_at: string;
+            /**
+             * Modified At
+             * @description Last modification timestamp of the object.
+             */
+            modified_at: string | null;
+            /** @description The interval unit for the trial period. */
+            trial_interval: components["schemas"]["TrialInterval"] | null;
+            /**
+             * Trial Interval Count
+             * @description The number of interval units for the trial period.
+             */
+            trial_interval_count: number | null;
+            /**
+             * Name
+             * @description The name of the product.
+             */
+            name: string;
+            /**
+             * Description
+             * @description The description of the product.
+             */
+            description: string | null;
+            /** @description The visibility of the product. */
+            visibility: components["schemas"]["ProductVisibility"];
+            /** @description The recurring interval of the product. If `None`, the product is a one-time purchase. */
+            recurring_interval: components["schemas"]["SubscriptionRecurringInterval"] | null;
+            /**
+             * Recurring Interval Count
+             * @description Number of interval units of the subscription. If this is set to 1 the charge will happen every interval (e.g. every month), if set to 2 it will be every other month, and so on. None for one-time products.
+             */
+            recurring_interval_count: number | null;
+            /**
+             * Is Recurring
+             * @description Whether the product is a subscription.
+             */
+            is_recurring: boolean;
+            /**
+             * Is Archived
+             * @description Whether the product is archived and no longer available.
+             */
+            is_archived: boolean;
+            /**
+             * Organization Id
+             * Format: uuid4
+             * @description The ID of the organization owning the product.
+             */
+            organization_id: string;
+            /**
+             * Benefits
+             * @description List of benefits granted by the product.
+             */
+            benefits: components["schemas"]["Benefit"][];
+        };
+        /**
+         * ProductVisibility
+         * @enum {string}
+         */
+        ProductVisibility: "draft" | "private" | "public";
+        /** SeatInvitationEmail */
+        SeatInvitationEmail: {
+            /**
+             * Template
+             * @default seat_invitation
+             * @constant
+             */
+            template: "seat_invitation";
+            props: components["schemas"]["SeatInvitationProps"];
+        };
+        /** SeatInvitationProps */
+        SeatInvitationProps: {
+            /** Email */
+            email: string;
+            organization: components["schemas"]["Organization"];
+            /** Product Name */
+            product_name: string;
+            /** Billing Manager Email */
+            billing_manager_email: string;
+            /** Claim Url */
+            claim_url: string;
+        };
+        /** SubscriptionCancellationEmail */
+        SubscriptionCancellationEmail: {
+            /**
+             * Template
+             * @default subscription_cancellation
+             * @constant
+             */
+            template: "subscription_cancellation";
+            props: components["schemas"]["SubscriptionCancellationProps"];
+        };
+        /** SubscriptionCancellationProps */
+        SubscriptionCancellationProps: {
+            /** Email */
+            email: string;
+            organization: components["schemas"]["Organization"];
+            product: components["schemas"]["ProductEmail"];
+            subscription: components["schemas"]["SubscriptionEmail"];
+            /** Url */
+            url: string;
+        };
+        /** SubscriptionConfirmationEmail */
+        SubscriptionConfirmationEmail: {
+            /**
+             * Template
+             * @default subscription_confirmation
+             * @constant
+             */
+            template: "subscription_confirmation";
+            props: components["schemas"]["SubscriptionConfirmationProps"];
+        };
+        /** SubscriptionConfirmationProps */
+        SubscriptionConfirmationProps: {
+            /** Email */
+            email: string;
+            organization: components["schemas"]["Organization"];
+            product: components["schemas"]["ProductEmail"];
+            subscription: components["schemas"]["SubscriptionEmail"];
+            /** Url */
+            url: string;
+            order: components["schemas"]["OrderEmail"];
+        };
+        /** SubscriptionCycledAfterTrialEmail */
+        SubscriptionCycledAfterTrialEmail: {
+            /**
+             * Template
+             * @default subscription_cycled_after_trial
+             * @constant
+             */
+            template: "subscription_cycled_after_trial";
+            props: components["schemas"]["SubscriptionCycledAfterTrialProps"];
+        };
+        /** SubscriptionCycledAfterTrialProps */
+        SubscriptionCycledAfterTrialProps: {
+            /** Email */
+            email: string;
+            organization: components["schemas"]["Organization"];
+            product: components["schemas"]["ProductEmail"];
+            subscription: components["schemas"]["SubscriptionEmail"];
+            /** Url */
+            url: string;
+            order: components["schemas"]["OrderEmail"];
+        };
+        /** SubscriptionCycledEmail */
+        SubscriptionCycledEmail: {
+            /**
+             * Template
+             * @default subscription_cycled
+             * @constant
+             */
+            template: "subscription_cycled";
+            props: components["schemas"]["SubscriptionCycledProps"];
+        };
+        /** SubscriptionCycledProps */
+        SubscriptionCycledProps: {
+            /** Email */
+            email: string;
+            organization: components["schemas"]["Organization"];
+            product: components["schemas"]["ProductEmail"];
+            subscription: components["schemas"]["SubscriptionEmail"];
+            /** Url */
+            url: string;
+            order: components["schemas"]["OrderEmail"];
+        };
+        /** SubscriptionEmail */
+        SubscriptionEmail: {
+            /**
+             * Created At
+             * Format: date-time
+             * @description Creation timestamp of the object.
+             */
+            created_at: string;
+            /**
+             * Modified At
+             * @description Last modification timestamp of the object.
+             */
+            modified_at: string | null;
+            /**
+             * Id
+             * Format: uuid4
+             * @description The ID of the object.
+             */
+            id: string;
+            /**
+             * Amount
+             * @description The amount of the subscription.
+             * @example 10000
+             */
+            amount: number;
+            /**
+             * Currency
+             * @description The currency of the subscription.
+             * @example usd
+             */
+            currency: string;
+            /**
+             * @description The interval at which the subscription recurs.
+             * @example month
+             */
+            recurring_interval: components["schemas"]["SubscriptionRecurringInterval"];
+            /**
+             * Recurring Interval Count
+             * @description Number of interval units of the subscription. If this is set to 1 the charge will happen every interval (e.g. every month), if set to 2 it will be every other month, and so on.
+             */
+            recurring_interval_count: number;
+            /**
+             * @description The status of the subscription.
+             * @example active
+             */
+            status: components["schemas"]["SubscriptionStatus"];
+            /**
+             * Current Period Start
+             * Format: date-time
+             * @description The start timestamp of the current billing period.
+             */
+            current_period_start: string;
+            /**
+             * Current Period End
+             * @description The end timestamp of the current billing period.
+             */
+            current_period_end: string | null;
+            /**
+             * Trial Start
+             * @description The start timestamp of the trial period, if any.
+             */
+            trial_start: string | null;
+            /**
+             * Trial End
+             * @description The end timestamp of the trial period, if any.
+             */
+            trial_end: string | null;
+            /**
+             * Cancel At Period End
+             * @description Whether the subscription will be canceled at the end of the current period.
+             */
+            cancel_at_period_end: boolean;
+            /**
+             * Canceled At
+             * @description The timestamp when the subscription was canceled. The subscription might still be active if `cancel_at_period_end` is `true`.
+             */
+            canceled_at: string | null;
+            /**
+             * Started At
+             * @description The timestamp when the subscription started.
+             */
+            started_at: string | null;
+            /**
+             * Ends At
+             * @description The timestamp when the subscription will end.
+             */
+            ends_at: string | null;
+            /**
+             * Ended At
+             * @description The timestamp when the subscription ended.
+             */
+            ended_at: string | null;
+            /**
+             * Customer Id
+             * Format: uuid4
+             * @description The ID of the subscribed customer.
+             */
+            customer_id: string;
+            /**
+             * Product Id
+             * Format: uuid4
+             * @description The ID of the subscribed product.
+             */
+            product_id: string;
+            /**
+             * Discount Id
+             * @description The ID of the applied discount, if any.
+             */
+            discount_id: string | null;
+            /** Checkout Id */
+            checkout_id: string | null;
+            /**
+             * Seats
+             * @description The number of seats for seat-based subscriptions. None for non-seat subscriptions.
+             * @default null
+             */
+            seats: number | null;
+            customer_cancellation_reason: components["schemas"]["CustomerCancellationReason"] | null;
+            /** Customer Cancellation Comment */
+            customer_cancellation_comment: string | null;
+        };
+        /** SubscriptionPastDueEmail */
+        SubscriptionPastDueEmail: {
+            /**
+             * Template
+             * @default subscription_past_due
+             * @constant
+             */
+            template: "subscription_past_due";
+            props: components["schemas"]["SubscriptionPastDueProps"];
+        };
+        /** SubscriptionPastDueProps */
+        SubscriptionPastDueProps: {
+            /** Email */
+            email: string;
+            organization: components["schemas"]["Organization"];
+            product: components["schemas"]["ProductEmail"];
+            subscription: components["schemas"]["SubscriptionEmail"];
+            /** Url */
+            url: string;
+            /**
+             * Payment Url
+             * @default null
+             */
+            payment_url: string | null;
+        };
+        /**
+         * SubscriptionProrationBehavior
+         * @enum {string}
+         */
+        SubscriptionProrationBehavior: "invoice" | "prorate";
+        /**
+         * SubscriptionRecurringInterval
+         * @enum {string}
+         */
+        SubscriptionRecurringInterval: "day" | "week" | "month" | "year";
+        /** SubscriptionRevokedEmail */
+        SubscriptionRevokedEmail: {
+            /**
+             * Template
+             * @default subscription_revoked
+             * @constant
+             */
+            template: "subscription_revoked";
+            props: components["schemas"]["SubscriptionRevokedProps"];
+        };
+        /** SubscriptionRevokedProps */
+        SubscriptionRevokedProps: {
+            /** Email */
+            email: string;
+            organization: components["schemas"]["Organization"];
+            product: components["schemas"]["ProductEmail"];
+            subscription: components["schemas"]["SubscriptionEmail"];
+            /** Url */
+            url: string;
+        };
+        /**
+         * SubscriptionStatus
+         * @enum {string}
+         */
+        SubscriptionStatus: "incomplete" | "incomplete_expired" | "trialing" | "active" | "past_due" | "canceled" | "unpaid";
+        /** SubscriptionUncanceledEmail */
+        SubscriptionUncanceledEmail: {
+            /**
+             * Template
+             * @default subscription_uncanceled
+             * @constant
+             */
+            template: "subscription_uncanceled";
+            props: components["schemas"]["SubscriptionUncanceledProps"];
+        };
+        /** SubscriptionUncanceledProps */
+        SubscriptionUncanceledProps: {
+            /** Email */
+            email: string;
+            organization: components["schemas"]["Organization"];
+            product: components["schemas"]["ProductEmail"];
+            subscription: components["schemas"]["SubscriptionEmail"];
+            /** Url */
+            url: string;
+        };
+        /** SubscriptionUpdatedEmail */
+        SubscriptionUpdatedEmail: {
+            /**
+             * Template
+             * @default subscription_updated
+             * @constant
+             */
+            template: "subscription_updated";
+            props: components["schemas"]["SubscriptionUpdatedProps"];
+        };
+        /** SubscriptionUpdatedProps */
+        SubscriptionUpdatedProps: {
+            /** Email */
+            email: string;
+            organization: components["schemas"]["Organization"];
+            product: components["schemas"]["ProductEmail"];
+            subscription: components["schemas"]["SubscriptionEmail"];
+            /** Url */
+            url: string;
+            order: components["schemas"]["OrderEmail"] | null;
+        };
+        /**
+         * TrialInterval
+         * @enum {string}
+         */
+        TrialInterval: "day" | "week" | "month" | "year";
+        /** WebhookEndpointDisabledEmail */
+        WebhookEndpointDisabledEmail: {
+            /**
+             * Template
+             * @default webhook_endpoint_disabled
+             * @constant
+             */
+            template: "webhook_endpoint_disabled";
+            props: components["schemas"]["WebhookEndpointDisabledProps"];
+        };
+        /** WebhookEndpointDisabledProps */
+        WebhookEndpointDisabledProps: {
+            /** Email */
+            email: string;
+            organization: components["schemas"]["Organization"];
+            /** Webhook Endpoint Url */
+            webhook_endpoint_url: string;
+            /** Dashboard Url */
+            dashboard_url: string;
+        };
+    };
+    responses: never;
+    parameters: never;
+    requestBodies: never;
+    headers: never;
+    pathItems: never;
 }
-export type $defs = Record<string, never>
-export type operations = Record<string, never>
+export type $defs = Record<string, never>;
+export type operations = Record<string, never>;

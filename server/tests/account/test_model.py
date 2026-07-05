@@ -1,5 +1,8 @@
+import datetime
+
 from polar.enums import AccountType
 from polar.models import Account, User
+from polar.models.account import PayoutSchedule
 from polar.postgres import AsyncSession
 
 
@@ -49,6 +52,72 @@ class TestIsPayoutReady:
     def test_disconnected_and_payouts_disabled(self, user: User) -> None:
         account = generate_account(user, stripe_id=None, is_payouts_enabled=False)
         assert account.is_payout_ready() is False
+
+
+class TestScheduledPayoutDue:
+    def _account(self, user: User, **kwargs: object) -> Account:
+        account = generate_account(user)
+        for key, value in kwargs.items():
+            setattr(account, key, value)
+        return account
+
+    def test_weekly_due_on_matching_weekday(self, user: User) -> None:
+        # 2025-02-03 is a Monday (weekday() == 0)
+        account = self._account(
+            user,
+            payout_schedule=PayoutSchedule.weekly,
+            payout_schedule_weekday=0,
+        )
+        assert account.is_scheduled_payout_due(datetime.datetime(2025, 2, 3)) is True
+        assert account.is_scheduled_payout_due(datetime.datetime(2025, 2, 4)) is False
+
+    def test_monthly_due_on_specific_day(self, user: User) -> None:
+        account = self._account(
+            user,
+            payout_schedule=PayoutSchedule.monthly,
+            payout_schedule_day_of_month=15,
+        )
+        assert account.is_scheduled_payout_due(datetime.datetime(2025, 6, 15)) is True
+        assert account.is_scheduled_payout_due(datetime.datetime(2025, 6, 14)) is False
+
+    def test_monthly_last_day_is_clamped_to_month_length(self, user: User) -> None:
+        account = self._account(
+            user,
+            payout_schedule=PayoutSchedule.monthly,
+            payout_schedule_day_of_month=31,
+        )
+        # Non-leap February clamps to the 28th
+        assert account.get_scheduled_payout_day_of_month(2025, 2) == 28
+        assert account.is_scheduled_payout_due(datetime.datetime(2025, 2, 28)) is True
+        assert account.is_scheduled_payout_due(datetime.datetime(2025, 2, 27)) is False
+        # Leap February clamps to the 29th
+        assert account.get_scheduled_payout_day_of_month(2024, 2) == 29
+        assert account.is_scheduled_payout_due(datetime.datetime(2024, 2, 29)) is True
+        # 30-day month runs on the 30th
+        assert account.is_scheduled_payout_due(datetime.datetime(2025, 6, 30)) is True
+        # 31-day month runs on the 31st
+        assert account.is_scheduled_payout_due(datetime.datetime(2025, 7, 31)) is True
+
+    def test_monthly_day_30_runs_on_last_day_of_shorter_month(self, user: User) -> None:
+        account = self._account(
+            user,
+            payout_schedule=PayoutSchedule.monthly,
+            payout_schedule_day_of_month=30,
+        )
+        # February has no 30th, so it clamps to the 28th
+        assert account.is_scheduled_payout_due(datetime.datetime(2025, 2, 28)) is True
+
+    def test_manual_is_never_due(self, user: User) -> None:
+        account = self._account(user, payout_schedule=PayoutSchedule.manual)
+        assert account.is_scheduled_payout_due(datetime.datetime(2025, 2, 3)) is False
+
+    def test_get_day_returns_none_for_non_monthly_schedule(self, user: User) -> None:
+        account = self._account(
+            user,
+            payout_schedule=PayoutSchedule.weekly,
+            payout_schedule_weekday=0,
+        )
+        assert account.get_scheduled_payout_day_of_month(2025, 2) is None
 
 
 class TestAccountFeeCalulations:

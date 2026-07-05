@@ -16,6 +16,7 @@ from polar.integrations.loops.service import loops as loops_service
 from polar.integrations.stripe.service import stripe
 from polar.kit.pagination import PaginationParams
 from polar.models import Account, Organization, User
+from polar.models.account import PayoutSchedule
 from polar.models.user import IdentityVerificationStatus
 from polar.postgres import AsyncReadSession, AsyncSession
 from polar.user.repository import UserRepository
@@ -115,10 +116,19 @@ class AccountService:
     async def update(
         self, session: AsyncSession, account: Account, account_update: AccountUpdate
     ) -> Account:
+        update_dict = account_update.model_dump(exclude_unset=True)
+
+        # When the payout schedule is (re)configured, clear the day fields that
+        # are irrelevant to the selected schedule so stale values don't linger.
+        if "payout_schedule" in update_dict:
+            schedule = update_dict["payout_schedule"]
+            if schedule != PayoutSchedule.weekly:
+                update_dict["payout_schedule_weekday"] = None
+            if schedule != PayoutSchedule.monthly:
+                update_dict["payout_schedule_day_of_month"] = None
+
         repository = AccountRepository.from_session(session)
-        return await repository.update(
-            account, update_dict=account_update.model_dump(exclude_unset=True)
-        )
+        return await repository.update(account, update_dict=update_dict)
 
     async def delete(self, session: AsyncSession, account: Account) -> Account:
         repository = AccountRepository.from_session(session)

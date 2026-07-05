@@ -224,6 +224,61 @@ class TestCreate:
 
 
 @pytest.mark.asyncio
+class TestCreateScheduled:
+    async def test_creates_payout_and_sends_notification(
+        self,
+        mocker: MockerFixture,
+        save_fixture: SaveFixture,
+        session: AsyncSession,
+        locker: Locker,
+        organization: Organization,
+        user: User,
+        payout_transaction_service_mock: MagicMock,
+    ) -> None:
+        account = await create_account(save_fixture, organization, user)
+        account.email = "owner@example.com"
+        await save_fixture(account)
+
+        payment_transaction = await create_payment_transaction(save_fixture)
+        await create_balance_transaction(
+            save_fixture, account=account, payment_transaction=payment_transaction
+        )
+        payout_transaction_service_mock.create.return_value = Transaction()
+
+        render_mock = mocker.patch(
+            "polar.payout.service.render_email_template",
+            return_value="<html></html>",
+        )
+        enqueue_email_mock = mocker.patch("polar.payout.service.enqueue_email")
+
+        payout = await payout_service.create_scheduled(session, locker, account=account)
+
+        assert payout is not None
+        render_mock.assert_called_once()
+        enqueue_email_mock.assert_called_once()
+        assert (
+            enqueue_email_mock.call_args.kwargs["to_email_addr"] == "owner@example.com"
+        )
+
+    async def test_swallows_insufficient_balance(
+        self,
+        mocker: MockerFixture,
+        save_fixture: SaveFixture,
+        session: AsyncSession,
+        locker: Locker,
+        organization: Organization,
+        user: User,
+    ) -> None:
+        account = await create_account(save_fixture, organization, user)
+        enqueue_email_mock = mocker.patch("polar.payout.service.enqueue_email")
+
+        payout = await payout_service.create_scheduled(session, locker, account=account)
+
+        assert payout is None
+        enqueue_email_mock.assert_not_called()
+
+
+@pytest.mark.asyncio
 class TestEstimate:
     async def test_regular_currency(
         self,

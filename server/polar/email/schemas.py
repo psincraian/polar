@@ -29,6 +29,7 @@ class EmailTemplate(StrEnum):
     organization_account_unlink = "organization_account_unlink"
     organization_under_review = "organization_under_review"
     organization_reviewed = "organization_reviewed"
+    payout_scheduled = "payout_scheduled"
     personal_access_token_leaked = "personal_access_token_leaked"
     seat_invitation = "seat_invitation"
     subscription_cancellation = "subscription_cancellation"
@@ -183,6 +184,16 @@ class OrganizationReviewedEmail(BaseModel):
         EmailTemplate.organization_reviewed
     )
     props: OrganizationReviewedProps
+
+
+class PayoutScheduledProps(EmailProps):
+    formatted_amount: str
+    account_holder_name: str | None = None
+
+
+class PayoutScheduledEmail(BaseModel):
+    template: Literal[EmailTemplate.payout_scheduled] = EmailTemplate.payout_scheduled
+    props: PayoutScheduledProps
 
 
 class PersonalAccessTokenLeakedProps(EmailProps):
@@ -367,6 +378,7 @@ Email = Annotated[
     | OrganizationAccountUnlinkEmail
     | OrganizationUnderReviewEmail
     | OrganizationReviewedEmail
+    | PayoutScheduledEmail
     | PersonalAccessTokenLeakedEmail
     | SeatInvitationEmail
     | SubscriptionCancellationEmail

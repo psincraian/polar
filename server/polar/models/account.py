@@ -1,3 +1,5 @@
+import calendar
+from datetime import datetime
 from enum import StrEnum
 from typing import TYPE_CHECKING, Any
 from uuid import UUID
@@ -22,6 +24,24 @@ if TYPE_CHECKING:
 type FeeBasisPoints = int
 type FeeFixedCents = int
 type Fees = tuple[FeeBasisPoints, FeeFixedCents]
+
+
+class PayoutSchedule(StrEnum):
+    """How payouts are triggered for an account."""
+
+    manual = "manual"
+    """Payouts are only created manually by the account holder."""
+    weekly = "weekly"
+    """A payout is created automatically once a week, on a given weekday."""
+    monthly = "monthly"
+    """A payout is created automatically once a month, on a given day."""
+
+    def get_display_name(self) -> str:
+        return {
+            PayoutSchedule.manual: "Manual",
+            PayoutSchedule.weekly: "Weekly",
+            PayoutSchedule.monthly: "Monthly",
+        }[self]
 
 
 class Account(RecordModel):
@@ -105,6 +125,33 @@ class Account(RecordModel):
 
     credit_balance: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
 
+    payout_schedule: Mapped[PayoutSchedule] = mapped_column(
+        StringEnum(PayoutSchedule),
+        nullable=False,
+        default=PayoutSchedule.manual,
+        server_default=PayoutSchedule.manual.value,
+    )
+    """How payouts are triggered for this account."""
+    payout_schedule_weekday: Mapped[int | None] = mapped_column(
+        Integer, nullable=True, default=None
+    )
+    """
+    Day of the week a weekly payout should be created on.
+
+    `0` is Monday and `6` is Sunday, matching Python's `date.weekday()`.
+    Only relevant when `payout_schedule` is `weekly`.
+    """
+    payout_schedule_day_of_month: Mapped[int | None] = mapped_column(
+        Integer, nullable=True, default=None
+    )
+    """
+    Day of the month a monthly payout should be created on (`1`-`31`).
+
+    If the month has fewer days than this value, the payout is created on the
+    last day of the month. In particular, `31` always means "last day of the
+    month". Only relevant when `payout_schedule` is `monthly`.
+    """
+
     @declared_attr
     def admin(cls) -> Mapped["User"]:
         return relationship("User", lazy="raise", foreign_keys="[Account.admin_id]")
@@ -155,6 +202,33 @@ class Account(RecordModel):
             self.account_type != AccountType.stripe
             or (self.is_payouts_enabled and self.stripe_id is not None)
         )
+
+    def get_scheduled_payout_day_of_month(self, year: int, month: int) -> int | None:
+        """Resolve the effective monthly payout day for a given month.
+
+        Clamps `payout_schedule_day_of_month` to the number of days in the
+        month, so a value of `31` (or any day beyond the month's length) is
+        interpreted as the last day of that month.
+        """
+        if (
+            self.payout_schedule != PayoutSchedule.monthly
+            or self.payout_schedule_day_of_month is None
+        ):
+            return None
+
+        days_in_month = calendar.monthrange(year, month)[1]
+        return min(self.payout_schedule_day_of_month, days_in_month)
+
+    def is_scheduled_payout_due(self, when: datetime) -> bool:
+        """Whether a scheduled payout should be created on the given date."""
+        if self.payout_schedule == PayoutSchedule.weekly:
+            return self.payout_schedule_weekday == when.weekday()
+        if self.payout_schedule == PayoutSchedule.monthly:
+            effective_day = self.get_scheduled_payout_day_of_month(
+                when.year, when.month
+            )
+            return effective_day == when.day
+        return False
 
     def get_associations_names(self) -> list[str]:
         associations_names: list[str] = []

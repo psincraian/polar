@@ -6,9 +6,14 @@ from typing import Any, cast
 import sentry_sdk
 import stripe as stripe_lib
 import structlog
+from sqlalchemy import inspect
 
+from polar.account.repository import AccountRepository
 from polar.auth.models import AuthSubject, User
 from polar.config import settings
+from polar.email.react import render_email_template
+from polar.email.schemas import PayoutScheduledEmail, PayoutScheduledProps
+from polar.email.sender import enqueue_email
 from polar.enums import AccountType
 from polar.eventstream.service import publish as eventstream_publish
 from polar.exceptions import PolarError, PolarRequestValidationError
@@ -16,6 +21,7 @@ from polar.integrations.stripe.service import stripe as stripe_service
 from polar.integrations.stripe.utils import get_expandable_id
 from polar.invoice.service import invoice as invoice_service
 from polar.kit.csv import IterableCSVWriter
+from polar.kit.currency import format_currency
 from polar.kit.db.postgres import AsyncSessionMaker
 from polar.kit.pagination import PaginationParams
 from polar.kit.sorting import Sorting
@@ -313,6 +319,91 @@ class PayoutService:
             enqueue_job("payout.created", payout_id=payout.id)
 
             return payout
+
+    async def trigger_scheduled_payouts(
+        self, session: AsyncSession, when: datetime.datetime
+    ) -> None:
+        """
+        Find accounts whose payout schedule is due on `when` and enqueue a job
+        to create a payout for each of them.
+        """
+        account_repository = AccountRepository.from_session(session)
+        accounts = await account_repository.get_scheduled_payout_accounts(when)
+        for account in accounts:
+            enqueue_job("payout.create_scheduled", account_id=account.id)
+
+    async def create_scheduled(
+        self, session: AsyncSession, locker: Locker, *, account: Account
+    ) -> Payout | None:
+        """
+        Create a payout for an account as part of its automatic payout schedule.
+
+        Contrary to `create`, this swallows the expected reasons a scheduled
+        payout can't happen (insufficient balance, account not ready, a payout
+        already being created) and returns `None` instead, since those are not
+        actionable errors in a scheduled context. On success, a notification is
+        sent to the account holder.
+        """
+        try:
+            payout = await self.create(session, locker, account=account)
+        except (
+            InsufficientBalance,
+            NotReadyAccount,
+            UnderReviewAccount,
+            PendingPayoutCreation,
+        ) as e:
+            log.info(
+                "Skipping scheduled payout",
+                account_id=str(account.id),
+                reason=type(e).__name__,
+            )
+            return None
+
+        await self._send_scheduled_payout_notification(session, account, payout)
+        return payout
+
+    async def _send_scheduled_payout_notification(
+        self, session: AsyncSession, account: Account, payout: Payout
+    ) -> None:
+        recipient = self._get_account_notification_email(account)
+        if recipient is None:
+            log.warning(
+                "No email address to notify about scheduled payout",
+                account_id=str(account.id),
+                payout_id=str(payout.id),
+            )
+            return
+
+        organization_repository = OrganizationRepository.from_session(session)
+        account_organizations = await organization_repository.get_all_by_account(
+            account.id
+        )
+        account_holder_name = (
+            account_organizations[0].name if account_organizations else None
+        )
+
+        email = PayoutScheduledEmail(
+            props=PayoutScheduledProps(
+                email=recipient,
+                formatted_amount=format_currency(
+                    payout.account_amount, payout.account_currency
+                ),
+                account_holder_name=account_holder_name,
+            )
+        )
+        enqueue_email(
+            to_email_addr=recipient,
+            subject="A scheduled payout is on its way",
+            html_content=render_email_template(email),
+        )
+
+    def _get_account_notification_email(self, account: Account) -> str | None:
+        # `Account.admin` is lazy="raise", so only read it when it's loaded.
+        if "admin" not in inspect(account).unloaded:
+            admin = account.admin
+            if admin is not None and admin.email:
+                return admin.email
+        return account.email
 
     async def transfer_stripe(self, session: AsyncSession, payout: Payout) -> Payout:
         """

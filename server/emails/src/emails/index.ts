@@ -13,6 +13,7 @@ import { OrganizationAccountUnlink } from './organization_account_unlink'
 import { OrganizationInvite } from './organization_invite'
 import OrganizationReviewed from './organization_reviewed'
 import { OrganizationUnderReview } from './organization_under_review'
+import { PayoutScheduled } from './payout_scheduled'
 import { PersonalAccessTokenLeaked } from './personal_access_token_leaked'
 import { SeatInvitation } from './seat_invitation'
 import { SubscriptionCancellation } from './subscription_cancellation'
@@ -37,6 +38,7 @@ const TEMPLATES: Record<string, React.FC<any>> = {
   organization_invite: OrganizationInvite,
   organization_under_review: OrganizationUnderReview,
   organization_reviewed: OrganizationReviewed,
+  payout_scheduled: PayoutScheduled,
   personal_access_token_leaked: PersonalAccessTokenLeaked,
   seat_invitation: SeatInvitation,
   subscription_cancellation: SubscriptionCancellation,

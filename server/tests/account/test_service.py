@@ -1,5 +1,7 @@
 import pytest
+from pydantic import ValidationError
 
+from polar.account.schemas import AccountUpdate
 from polar.account.service import (
     CannotChangeAdminError,
     UserNotOrganizationMemberError,
@@ -11,6 +13,7 @@ from polar.auth.models import AuthSubject
 from polar.kit.pagination import PaginationParams
 from polar.kit.utils import utc_now
 from polar.models import Account, Organization, Transaction, User, UserOrganization
+from polar.models.account import PayoutSchedule
 from polar.models.transaction import Processor, TransactionType
 from polar.models.user import IdentityVerificationStatus
 from polar.postgres import AsyncSession
@@ -376,3 +379,112 @@ class TestGet:
 
         # Verify no account is returned
         assert retrieved_account is None
+
+
+@pytest.mark.asyncio
+class TestUpdatePayoutSchedule:
+    async def test_set_weekly_schedule(
+        self, session: AsyncSession, save_fixture: SaveFixture, user: User
+    ) -> None:
+        account = await create_account(
+            save_fixture, admin=user, status=Account.Status.ACTIVE
+        )
+
+        updated = await account_service.update(
+            session,
+            account,
+            AccountUpdate(
+                payout_schedule=PayoutSchedule.weekly,
+                payout_schedule_weekday=2,
+            ),
+        )
+
+        assert updated.payout_schedule == PayoutSchedule.weekly
+        assert updated.payout_schedule_weekday == 2
+        assert updated.payout_schedule_day_of_month is None
+
+    async def test_switching_to_weekly_clears_day_of_month(
+        self, session: AsyncSession, save_fixture: SaveFixture, user: User
+    ) -> None:
+        account = await create_account(
+            save_fixture, admin=user, status=Account.Status.ACTIVE
+        )
+        account.payout_schedule = PayoutSchedule.monthly
+        account.payout_schedule_day_of_month = 15
+        await save_fixture(account)
+
+        updated = await account_service.update(
+            session,
+            account,
+            AccountUpdate(
+                payout_schedule=PayoutSchedule.weekly,
+                payout_schedule_weekday=1,
+            ),
+        )
+
+        assert updated.payout_schedule == PayoutSchedule.weekly
+        assert updated.payout_schedule_weekday == 1
+        assert updated.payout_schedule_day_of_month is None
+
+    async def test_set_manual_clears_schedule_days(
+        self, session: AsyncSession, save_fixture: SaveFixture, user: User
+    ) -> None:
+        account = await create_account(
+            save_fixture, admin=user, status=Account.Status.ACTIVE
+        )
+        account.payout_schedule = PayoutSchedule.weekly
+        account.payout_schedule_weekday = 3
+        await save_fixture(account)
+
+        updated = await account_service.update(
+            session,
+            account,
+            AccountUpdate(payout_schedule=PayoutSchedule.manual),
+        )
+
+        assert updated.payout_schedule == PayoutSchedule.manual
+        assert updated.payout_schedule_weekday is None
+        assert updated.payout_schedule_day_of_month is None
+
+    async def test_updating_billing_only_keeps_schedule(
+        self, session: AsyncSession, save_fixture: SaveFixture, user: User
+    ) -> None:
+        account = await create_account(
+            save_fixture, admin=user, status=Account.Status.ACTIVE
+        )
+        account.payout_schedule = PayoutSchedule.weekly
+        account.payout_schedule_weekday = 4
+        await save_fixture(account)
+
+        updated = await account_service.update(
+            session,
+            account,
+            AccountUpdate(billing_name="Acme Inc."),
+        )
+
+        assert updated.billing_name == "Acme Inc."
+        assert updated.payout_schedule == PayoutSchedule.weekly
+        assert updated.payout_schedule_weekday == 4
+
+
+class TestAccountUpdateValidation:
+    def test_weekly_requires_weekday(self) -> None:
+        with pytest.raises(ValidationError):
+            AccountUpdate(payout_schedule=PayoutSchedule.weekly)
+
+    def test_monthly_requires_day_of_month(self) -> None:
+        with pytest.raises(ValidationError):
+            AccountUpdate(payout_schedule=PayoutSchedule.monthly)
+
+    def test_weekday_out_of_range_is_rejected(self) -> None:
+        with pytest.raises(ValidationError):
+            AccountUpdate(
+                payout_schedule=PayoutSchedule.weekly, payout_schedule_weekday=7
+            )
+
+    def test_day_of_month_out_of_range_is_rejected(self) -> None:
+        with pytest.raises(ValidationError):
+            AccountUpdate(
+                payout_schedule=PayoutSchedule.monthly,
+                payout_schedule_day_of_month=32,
+            )

@@ -1,11 +1,22 @@
 import uuid
 
 import structlog
+from sqlalchemy.orm import joinedload
 
+from polar.account.repository import AccountRepository
 from polar.enums import AccountType
 from polar.exceptions import PolarTaskError
+from polar.kit.utils import utc_now
+from polar.locker import Locker
 from polar.logging import Logger
-from polar.worker import AsyncSessionMaker, CronTrigger, TaskPriority, actor
+from polar.models import Account
+from polar.worker import (
+    AsyncSessionMaker,
+    CronTrigger,
+    RedisMiddleware,
+    TaskPriority,
+    actor,
+)
 
 from .repository import PayoutRepository
 from .service import InsufficientBalance, PayoutAlreadyTriggered
@@ -21,6 +32,13 @@ class PayoutDoesNotExist(PayoutTaskError):
     def __init__(self, payout_id: uuid.UUID) -> None:
         self.payout_id = payout_id
         message = f"The payout with id {payout_id} does not exist."
+        super().__init__(message)
+
+
+class AccountDoesNotExist(PayoutTaskError):
+    def __init__(self, account_id: uuid.UUID) -> None:
+        self.account_id = account_id
+        message = f"The account with id {account_id} does not exist."
         super().__init__(message)
 
 
@@ -46,6 +64,35 @@ async def payout_created(payout_id: uuid.UUID) -> None:
 async def trigger_stripe_payouts() -> None:
     async with AsyncSessionMaker() as session:
         await payout_service.trigger_stripe_payouts(session)
+
+
+@actor(
+    actor_name="payout.trigger_scheduled_payouts",
+    cron_trigger=CronTrigger(hour=12, minute=0),
+    priority=TaskPriority.LOW,
+)
+async def trigger_scheduled_payouts() -> None:
+    async with AsyncSessionMaker() as session:
+        await payout_service.trigger_scheduled_payouts(session, utc_now())
+
+
+@actor(actor_name="payout.create_scheduled", priority=TaskPriority.LOW)
+async def create_scheduled_payout(account_id: uuid.UUID) -> None:
+    async with AsyncSessionMaker() as session:
+        account_repository = AccountRepository.from_session(session)
+        account = await account_repository.get_by_id(
+            account_id,
+            options=(
+                joinedload(Account.admin),
+                joinedload(Account.users),
+                joinedload(Account.organizations),
+            ),
+        )
+        if account is None:
+            raise AccountDoesNotExist(account_id)
+
+        locker = Locker(RedisMiddleware.get())
+        await payout_service.create_scheduled(session, locker, account=account)
 
 
 @actor(actor_name="payout.trigger_stripe_payout", priority=TaskPriority.LOW)

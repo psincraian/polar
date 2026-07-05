@@ -1,6 +1,7 @@
+import { getQueryClient } from '@/utils/api/query'
 import { api } from '@/utils/client'
 import { schemas, unwrap } from '@polar-sh/client'
-import { UseQueryResult, useQuery } from '@tanstack/react-query'
+import { UseQueryResult, useMutation, useQuery } from '@tanstack/react-query'
 import { defaultRetry } from './retry'
 
 export const useListAccounts: () => UseQueryResult<
@@ -10,6 +11,24 @@ export const useListAccounts: () => UseQueryResult<
     queryKey: ['user', 'accounts'],
     queryFn: () => unwrap(api.GET('/v1/accounts/search')),
     retry: defaultRetry,
+  })
+
+export const useUpdateAccount = () =>
+  useMutation({
+    mutationFn: (variables: { id: string; body: schemas['AccountUpdate'] }) =>
+      api.PATCH('/v1/accounts/{id}', {
+        params: { path: { id: variables.id } },
+        body: variables.body,
+      }),
+    onSuccess: (result, variables) => {
+      if (result.error) {
+        return
+      }
+      const queryClient = getQueryClient()
+      queryClient.invalidateQueries({ queryKey: ['accounts', variables.id] })
+      queryClient.invalidateQueries({ queryKey: ['organizations', 'account'] })
+      queryClient.invalidateQueries({ queryKey: ['user', 'accounts'] })
+    },
   })
 
 export const useAccountCredits = (

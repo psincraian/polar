@@ -1,7 +1,10 @@
+import calendar
 import uuid
+from collections.abc import Sequence
+from datetime import datetime
 from uuid import UUID
 
-from sqlalchemy import Select, false
+from sqlalchemy import Select, and_, false, or_
 
 from polar.auth.models import AuthSubject, User, is_organization, is_user
 from polar.kit.repository import (
@@ -11,6 +14,7 @@ from polar.kit.repository import (
     RepositorySoftDeletionMixin,
 )
 from polar.models import Account, Organization
+from polar.models.account import PayoutSchedule
 
 
 class AccountRepository(
@@ -59,6 +63,45 @@ class AccountRepository(
             .options(*options)
         )
         return await self.get_one_or_none(statement)
+
+    async def get_scheduled_payout_accounts(
+        self, when: datetime, *, options: Options = ()
+    ) -> Sequence[Account]:
+        """Return active accounts whose payout schedule is due on `when`.
+
+        Weekly schedules match on the weekday. Monthly schedules match on the
+        configured day of the month, and also on the last day of the month when
+        the configured day is greater than the month's length (so a day of `31`
+        is always paid out on the last day, whatever the month).
+        """
+        weekday = when.weekday()
+        day = when.day
+        days_in_month = calendar.monthrange(when.year, when.month)[1]
+        is_last_day = day == days_in_month
+
+        weekly_condition = and_(
+            Account.payout_schedule == PayoutSchedule.weekly,
+            Account.payout_schedule_weekday == weekday,
+        )
+
+        monthly_day_condition = Account.payout_schedule_day_of_month == day
+        if is_last_day:
+            monthly_day_condition = or_(
+                monthly_day_condition,
+                Account.payout_schedule_day_of_month > day,
+            )
+        monthly_condition = and_(
+            Account.payout_schedule == PayoutSchedule.monthly,
+            monthly_day_condition,
+        )
+
+        statement = (
+            self.get_base_statement()
+            .where(Account.status == Account.Status.ACTIVE)
+            .where(or_(weekly_condition, monthly_condition))
+            .options(*options)
+        )
+        return await self.get_all(statement)
 
     def get_readable_statement(
         self, auth_subject: AuthSubject[User | Organization]
