@@ -2,6 +2,7 @@ import { useOrganizationSSE } from '@/hooks/sse'
 import { setValidationErrors } from '@/utils/api/errors'
 import { getQueryClient } from '@/utils/api/query'
 import { api } from '@/utils/client'
+import { triggerFileDownload } from '@/utils/download'
 import { isValidationError, type schemas } from '@polar-sh/client'
 import { useCallback, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -60,7 +61,7 @@ export const useInvoiceDownload = ({
       setLoading(false)
       return
     }
-    window.open(response.data.url, '_blank')
+    triggerFileDownload(response.data.url)
     setLoading(false)
     onClose()
   }, [payout, onClose])

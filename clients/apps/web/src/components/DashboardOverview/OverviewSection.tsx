@@ -10,6 +10,7 @@ import {
   ChartRange,
   DEFAULT_OVERVIEW_METRICS,
   getChartRangeParams,
+  MAX_OVERVIEW_METRICS,
 } from '@/utils/metrics'
 import { schemas } from '@polar-sh/client'
 import Button from '@polar-sh/ui/components/atoms/Button'
@@ -33,10 +34,11 @@ export function OverviewSection({ organization }: OverviewSectionProps) {
 
   const initialMetrics = React.useMemo<(keyof schemas['Metrics'])[]>(() => {
     const stored = organization.feature_settings?.overview_metrics
-    if (stored?.length === 5) {
-      return stored.filter((slug) =>
-        ALL_METRICS.some((m) => m.slug === slug),
-      ) as (keyof schemas['Metrics'])[]
+    const validStored = stored?.filter((slug) =>
+      ALL_METRICS.some((m) => m.slug === slug),
+    ) as (keyof schemas['Metrics'])[] | undefined
+    if (validStored && validStored.length > 0) {
+      return validStored.slice(0, MAX_OVERVIEW_METRICS)
     }
     return DEFAULT_OVERVIEW_METRICS
   }, [organization.feature_settings?.overview_metrics])

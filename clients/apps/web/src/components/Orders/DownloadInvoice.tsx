@@ -5,6 +5,7 @@ import { useModal } from '@/components/Modal/useModal'
 import { useCustomerSSE, useOrganizationSSE } from '@/hooks/sse'
 import { setValidationErrors } from '@/utils/api/errors'
 import { api, createClientSideAPI } from '@/utils/client'
+import { triggerFileDownload } from '@/utils/download'
 import MoreVertOutlined from '@mui/icons-material/MoreVertOutlined'
 import {
   enums,
@@ -94,11 +95,8 @@ const DownloadInvoice = ({
       setLoading(false)
       return
     }
-    const newWindow = window.open(response.data.url, '_blank')
 
-    if (!newWindow) {
-      window.location.href = response.data.url
-    }
+    triggerFileDownload(response.data.url)
 
     setLoading(false)
     hide()

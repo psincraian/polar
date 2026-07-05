@@ -199,6 +199,10 @@ export const DEFAULT_OVERVIEW_METRICS: (keyof schemas['Metrics'])[] = [
   'checkouts_conversion',
 ]
 
+// The overview supports customizing between 1 and 5 metric tiles.
+export const MIN_OVERVIEW_METRICS = 1
+export const MAX_OVERVIEW_METRICS = 5
+
 export const ALL_METRICS: {
   slug: keyof schemas['Metrics']
   display_name: string
